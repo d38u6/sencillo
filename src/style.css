@@ -1,6 +1,9 @@
 #divmain {
   display: flex;
   box-sizing: border-box;
+  padding: 30px;
+  background: #000;
+  box-shadow: inset 1px 1px 10px 20px #fff;
 }
 #divmain canvas {
   width: 100%;

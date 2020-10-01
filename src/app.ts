@@ -5,22 +5,28 @@ interface SencilloOptions extends GameOptions {
   responsive: boolean;
 }
 
+const padding = 30;
+
 async function sencillo(
   divId: string,
   imgSrc: string,
   options: SencilloOptions = {
     width: 1280,
     height: 720,
-    puzzlesNumber: 36,
-    responsive: false,
+    puzzlesNumber: 16,
+    responsive: true,
   }
 ): Promise<void> {
   const image = await ImageJS.createFromFile(imgSrc);
 
   // init main div
   const div = document.getElementById(divId) as HTMLDivElement;
-  div.style.width = options.responsive ? "100%" : `${options.width}px`;
-  div.style.height = options.responsive ? "100%" : `${options.height}px`;
+  div.style.width = options.responsive
+    ? "100%"
+    : `${options.width + padding * 2}px`;
+  div.style.height = options.responsive
+    ? "100%"
+    : `${options.height + padding * 2}px`;
 
   // init canvas
   const canvas = document.createElement("canvas");
@@ -38,4 +44,4 @@ async function sencillo(
   const game = new Game(ctx, rescaledImage, gameOptions);
 }
 
-sencillo("divmain", "./images/1920x1280.jpg");
+sencillo("divmain", "./images/1280x720.jpg");

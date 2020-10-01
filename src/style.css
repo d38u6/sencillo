@@ -1,0 +1,15 @@
+#divmain {
+  /* display: flex;
+  width: fit-content;
+  height: fit-content;
+  width: 100%;
+  max-width: 1280px;
+  height: 100%;
+  max-height: 720px; */
+}
+#divmain canvas {
+  width: 100%;
+  max-width: 1280px;
+  height: 100%;
+  max-height: 720px;
+}

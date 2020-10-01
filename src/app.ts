@@ -1,13 +1,26 @@
 import { ImageJS } from "./ImageJS/ImageJS";
 import { Game, GameOptions } from "./game";
 
+interface SencilloOptions extends GameOptions {
+  responsive: boolean;
+}
+
 async function sencillo(
   divId: string,
   imgSrc: string,
-  options: GameOptions = { width: 1280, height: 720, puzzlesNumber: 36 }
+  options: SencilloOptions = {
+    width: 1280,
+    height: 720,
+    puzzlesNumber: 36,
+    responsive: false,
+  }
 ): Promise<void> {
-  const div = document.getElementById(divId) as HTMLDivElement;
   const image = await ImageJS.createFromFile(imgSrc);
+
+  // init main div
+  const div = document.getElementById(divId) as HTMLDivElement;
+  div.style.width = options.responsive ? "100%" : `${options.width}px`;
+  div.style.height = options.responsive ? "100%" : `${options.height}px`;
 
   // init canvas
   const canvas = document.createElement("canvas");
@@ -21,7 +34,8 @@ async function sencillo(
   const rescaledImage = image.rescale({ width, height });
 
   // init Game
-  const game = new Game(ctx, rescaledImage, options);
+  const { responsive, ...gameOptions } = options;
+  const game = new Game(ctx, rescaledImage, gameOptions);
 }
 
 sencillo("divmain", "./images/1920x1280.jpg");

@@ -2,6 +2,8 @@ import { ImageJS } from "./ImageJS/ImageJS";
 import { MousePosition, Resolution } from "./commonTypes";
 import { Puzzle } from "./puzzle";
 
+import imgEmptyPuzzle from "./assets/emptyPuzzle.png";
+
 export interface BoardOptions extends Resolution {
   gridSize: number;
 }
@@ -13,7 +15,7 @@ export class Board {
 
   private readonly gridSize: number;
 
-  private puzzles: Puzzle[];
+  private puzzles: Puzzle[] = [];
 
   constructor(
     private readonly image: ImageJS,
@@ -23,7 +25,27 @@ export class Board {
     this.puzzleHeight = height / gridSize;
     this.gridSize = gridSize;
 
+    this.initPuzzles();
+  }
+
+  async initPuzzles(): Promise<void> {
     this.puzzles = [...this.createPuzzles()];
+    this.puzzles.pop();
+    const emptyPuzzle = await this.createEmptyPuzzle();
+    this.puzzles.push(emptyPuzzle);
+  }
+
+  async createEmptyPuzzle(): Promise<Puzzle> {
+    const { puzzleWidth, puzzleHeight, gridSize } = this;
+    const lastIndex = gridSize - 1;
+    const emptyPuzzle = (await ImageJS.createFromFile(imgEmptyPuzzle))
+      .rescale({ width: puzzleWidth, height: puzzleHeight })
+      .getSource();
+
+    return new Puzzle(emptyPuzzle, {
+      x: lastIndex * puzzleWidth,
+      y: lastIndex * puzzleHeight,
+    });
   }
 
   *createPuzzles(): Generator<Puzzle> {
@@ -34,7 +56,7 @@ export class Board {
         const posY = y * puzzleHeight;
         yield new Puzzle(
           this.image.cut(posX, posY, puzzleWidth, puzzleHeight),
-          { posX, posY, gridX: x, gridY: y }
+          { x: posX, y: posY }
         );
       }
     }
@@ -45,6 +67,7 @@ export class Board {
   };
 
   draw(ctx: CanvasRenderingContext2D): void {
+    ImageJS.clearCanvas(ctx);
     this.puzzles.forEach((puzzle) => puzzle.draw(ctx));
   }
 }

@@ -1,4 +1,4 @@
-import { SquareNumber, Resolution } from "../commonTypes";
+import { SquareNumber, Resolution, Context2d } from "../commonTypes";
 
 type imageSlice = {
   posX: number;
@@ -30,8 +30,19 @@ export class ImageJS {
     return new ImageJS(image);
   }
 
-  getSource(): CanvasImageSource {
-    return this.source;
+  static clearCanvas(ctx: Context2d): void {
+    const { width, height } = ctx.canvas;
+    ctx.clearRect(0, 0, width, height);
+  }
+
+  getSource(): OffscreenCanvas {
+    const canvas = new OffscreenCanvas(this.width, this.height);
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      ctx.drawImage(this.source, 0, 0);
+    }
+
+    return canvas;
   }
 
   rescale(resolution: Resolution): ImageJS {

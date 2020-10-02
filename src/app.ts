@@ -14,7 +14,7 @@ async function sencillo(
     width: 1280,
     height: 720,
     puzzlesNumber: 16,
-    responsive: true,
+    responsive: false,
   }
 ): Promise<void> {
   const image = await ImageJS.createFromFile(imgSrc);
@@ -44,4 +44,4 @@ async function sencillo(
   const game = new Game(ctx, rescaledImage, gameOptions);
 }
 
-sencillo("divmain", "./images/1280x720.jpg");
+sencillo("divmain", "./images/1920x1280.jpg");

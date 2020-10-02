@@ -22,3 +22,7 @@ export interface Puzzle {
   destiny: Position;
   source: CanvasImageSource;
 }
+
+export type Context2d =
+  | OffscreenCanvasRenderingContext2D
+  | CanvasRenderingContext2D;

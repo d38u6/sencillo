@@ -1,13 +1,8 @@
-import { MousePosition } from "./commonTypes";
+import { MousePosition, Resolution } from "./commonTypes";
 
 type Border = [number, string];
 
-interface Pos {
-  posX: number;
-  posY: number;
-  gridX: number;
-  gridY: number;
-}
+type Coordinates = { x: number; y: number };
 
 const borders: { [key: string]: Border } = {
   common: [5, "#fff"],
@@ -19,10 +14,17 @@ export class Puzzle {
 
   private source: OffscreenCanvas;
 
+  private readonly resolution: Resolution;
+
   constructor(
     private readonly originalSource: OffscreenCanvas,
-    private position: Pos
+    private coordinates: Coordinates
   ) {
+    this.resolution = {
+      width: originalSource.width,
+      height: originalSource.height,
+    };
+
     this.source = new OffscreenCanvas(
       originalSource.width,
       originalSource.height
@@ -35,13 +37,13 @@ export class Puzzle {
 
   isMouseOn({ offsetX, offsetY }: MousePosition): boolean {
     const {
-      source: { width, height },
-      position: { gridX, gridY },
+      coordinates: { x, y },
+      resolution: { width, height },
     } = this;
-    const mouseGridX = Math.floor(offsetX / width);
-    const mouseGridY = Math.floor(offsetY / height);
 
-    return mouseGridX === gridX && mouseGridY === gridY;
+    return (
+      offsetX > x && offsetX < x + width && offsetY > y && offsetY < y + height
+    );
   }
 
   handlerMouseMove = (mousePosition: MousePosition): void => {
@@ -87,7 +89,7 @@ export class Puzzle {
   }
 
   draw(ctx: CanvasRenderingContext2D): void {
-    const { posX, posY } = this.position;
-    ctx.drawImage(this.source, posX, posY);
+    const { x, y } = this.coordinates;
+    ctx.drawImage(this.source, x, y);
   }
 }

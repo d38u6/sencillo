@@ -20,7 +20,8 @@ export class Puzzle {
   constructor(
     private readonly originalSource: OffscreenCanvas,
     public coordinates: Coordinates,
-    public gridPosition: Coordinates
+    public gridPosition: Coordinates,
+    public readonly isEmpty = false
   ) {
     this.resolution = {
       width: originalSource.width,

@@ -20,6 +20,8 @@ export class Board {
 
   private activePuzzle: Puzzle | null = null;
 
+  private emptyPuzzle: Puzzle | undefined;
+
   constructor(
     puzzles: PuzzlesFactory,
     { puzzleWidth, puzzleHeight, gridSize }: BoardOptions
@@ -33,6 +35,7 @@ export class Board {
 
   async initPuzzles(puzzles: PuzzlesFactory): Promise<void> {
     this.puzzles = await puzzles();
+    this.emptyPuzzle = this.puzzles.find(({ isEmpty }) => isEmpty);
   }
 
   puzzleResolver({ offsetX, offsetY }: MousePosition): Puzzle | undefined {
@@ -47,9 +50,24 @@ export class Board {
     );
   }
 
+  isMovePossible({ gridPosition, isEmpty }: Puzzle): boolean {
+    if (this.emptyPuzzle && !isEmpty) {
+      const { x, y } = this.emptyPuzzle.gridPosition;
+      return (
+        (Math.abs(x - gridPosition.x) < 2 && y === gridPosition.y) ||
+        (Math.abs(y - gridPosition.y) < 2 && x === gridPosition.x)
+      );
+    }
+    return false;
+  }
+
   handlerMouseMove = (mousePosition: MousePosition): void => {
     const resolvedPuzzel = this.puzzleResolver(mousePosition);
-    if (resolvedPuzzel && resolvedPuzzel !== this.activePuzzle) {
+    if (
+      resolvedPuzzel &&
+      this.isMovePossible(resolvedPuzzel) &&
+      resolvedPuzzel !== this.activePuzzle
+    ) {
       this.activePuzzle?.blur();
       this.activePuzzle = resolvedPuzzel;
       this.activePuzzle.focus();
@@ -60,7 +78,7 @@ export class Board {
   };
 
   handlerClick = (mousePosition: MousePosition): void => {
-    console.log(mousePosition);
+    //
   };
 
   draw(ctx: CanvasRenderingContext2D): void {

@@ -72,7 +72,8 @@ export class Game {
         x: lastIndex * puzzleWidth,
         y: lastIndex * puzzleHeight,
       },
-      { x: lastIndex, y: lastIndex }
+      { x: lastIndex, y: lastIndex },
+      true
     );
   }
 

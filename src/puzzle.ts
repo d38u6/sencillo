@@ -52,6 +52,36 @@ export class Puzzle {
     }
   }
 
+  private changePosition({ x, y }: Coordinates): void {
+    this.coordinates.x = x;
+    this.coordinates.y = y;
+  }
+
+  createMoveAnimation({ x, y }: Coordinates, time: number): () => void {
+    const stepX = (x - this.coordinates.x) / (time / 16);
+    const stepY = (y - this.coordinates.y) / (time / 16);
+
+    const animation = (): void => {
+      const diffX = Math.abs(x - this.coordinates.x);
+      const diffY = Math.abs(y - this.coordinates.y);
+      if (diffX <= Math.abs(stepX) && diffY <= Math.abs(stepY)) {
+        this.changePosition({ x, y });
+      } else {
+        this.changePosition({
+          x: this.coordinates.x + stepX,
+          y: this.coordinates.y + stepY,
+        });
+        requestAnimationFrame(animation);
+      }
+    };
+    return animation;
+  }
+
+  moveTo(newCoordinates: Coordinates): void {
+    const animation = this.createMoveAnimation(newCoordinates, 275);
+    requestAnimationFrame(animation);
+  }
+
   // Draw Methods
 
   private addBorder([width, color]: Border): void {

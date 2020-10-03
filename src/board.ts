@@ -59,6 +59,10 @@ export class Board {
     }
   };
 
+  handlerClick = (mousePosition: MousePosition): void => {
+    console.log(mousePosition);
+  };
+
   draw(ctx: CanvasRenderingContext2D): void {
     this.puzzles.forEach((puzzle) => puzzle.draw(ctx));
   }

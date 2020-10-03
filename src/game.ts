@@ -101,9 +101,15 @@ export class Game {
     this.board.handlerMouseMove(mousePosition);
   };
 
+  handlerClick = (e: MouseEvent): void => {
+    const mousePosition = this.calculateMousePosition(e);
+    this.board.handlerClick(mousePosition);
+  };
+
   initEvents(): void {
     const { canvas } = this.renderCtx;
     canvas.addEventListener("mousemove", this.handlerMouseMove);
+    canvas.addEventListener("click", this.handlerClick);
   }
 
   draw = (): void => {

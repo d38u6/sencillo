@@ -1,4 +1,4 @@
-import { MousePosition, Resolution } from "./commonTypes";
+import { Resolution } from "./commonTypes";
 
 type Border = [number, string];
 
@@ -10,7 +10,7 @@ const borders: { [key: string]: Border } = {
 };
 
 export class Puzzle {
-  private isActive = false;
+  isActive = false;
 
   private source: OffscreenCanvas;
 
@@ -24,55 +24,30 @@ export class Puzzle {
       width: originalSource.width,
       height: originalSource.height,
     };
-
     this.source = new OffscreenCanvas(
       originalSource.width,
       originalSource.height
     );
-    this.reDrawSource();
-    this.drawBorder(borders.common);
+
+    this.redrawSource();
+    this.addBorder(borders.common);
   }
 
-  // Mouse Events
-
-  isMouseOn({ offsetX, offsetY }: MousePosition): boolean {
-    const {
-      coordinates: { x, y },
-      resolution: { width, height },
-    } = this;
-
-    return (
-      offsetX > x && offsetX < x + width && offsetY > y && offsetY < y + height
-    );
+  focus(): void {
+    this.isActive = true;
+    this.redrawSource();
+    this.addBorder(borders.active);
   }
 
-  handlerMouseMove = (mousePosition: MousePosition): void => {
-    if (this.isMouseOn(mousePosition)) {
-      this.handlerMouseOn();
-    } else {
-      this.handlerMouseOff();
-    }
-  };
-
-  handlerMouseOn(): void {
-    if (!this.isActive) {
-      this.isActive = true;
-      this.reDrawSource();
-      this.drawBorder(borders.active);
-    }
-  }
-
-  handlerMouseOff(): void {
-    if (this.isActive) {
-      this.isActive = false;
-      this.reDrawSource();
-      this.drawBorder(borders.common);
-    }
+  blur(): void {
+    this.isActive = false;
+    this.redrawSource();
+    this.addBorder(borders.common);
   }
 
   // Draw Methods
 
-  drawBorder([width, color]: Border): void {
+  private addBorder([width, color]: Border): void {
     const ctx = this.source.getContext("2d");
     if (ctx) {
       ctx.strokeStyle = color;
@@ -81,7 +56,7 @@ export class Puzzle {
     }
   }
 
-  reDrawSource(): void {
+  private redrawSource(): void {
     const ctx = this.source.getContext("2d");
     if (ctx) {
       ctx.drawImage(this.originalSource, 0, 0);

@@ -1,10 +1,11 @@
-import { ImageJS } from "./ImageJS/ImageJS";
-import { MousePosition, Resolution } from "./commonTypes";
+import { MousePosition } from "./commonTypes";
 import { Puzzle } from "./puzzle";
 
-import imgEmptyPuzzle from "./assets/emptyPuzzle.png";
+type PuzzlesFactory = () => Promise<Puzzle[]>;
 
-export interface BoardOptions extends Resolution {
+export interface BoardOptions {
+  puzzleWidth: number;
+  puzzleHeight: number;
   gridSize: number;
 }
 
@@ -18,56 +19,25 @@ export class Board {
   private puzzles: Puzzle[] = [];
 
   constructor(
-    private readonly image: ImageJS,
-    { width, height, gridSize }: BoardOptions
+    puzzles: PuzzlesFactory,
+    { puzzleWidth, puzzleHeight, gridSize }: BoardOptions
   ) {
-    this.puzzleWidth = width / gridSize;
-    this.puzzleHeight = height / gridSize;
+    this.puzzleWidth = puzzleWidth;
+    this.puzzleHeight = puzzleHeight;
     this.gridSize = gridSize;
 
-    this.initPuzzles();
+    this.initPuzzles(puzzles);
   }
 
-  async initPuzzles(): Promise<void> {
-    this.puzzles = [...this.createPuzzles()];
-    this.puzzles.pop();
-    const emptyPuzzle = await this.createEmptyPuzzle();
-    this.puzzles.push(emptyPuzzle);
-  }
-
-  async createEmptyPuzzle(): Promise<Puzzle> {
-    const { puzzleWidth, puzzleHeight, gridSize } = this;
-    const lastIndex = gridSize - 1;
-    const emptyPuzzle = (await ImageJS.createFromFile(imgEmptyPuzzle))
-      .rescale({ width: puzzleWidth, height: puzzleHeight })
-      .getSource();
-
-    return new Puzzle(emptyPuzzle, {
-      x: lastIndex * puzzleWidth,
-      y: lastIndex * puzzleHeight,
-    });
-  }
-
-  *createPuzzles(): Generator<Puzzle> {
-    const { puzzleWidth, puzzleHeight, gridSize } = this;
-    for (let x = 0; x < gridSize; x += 1) {
-      for (let y = 0; y < gridSize; y += 1) {
-        const posX = x * puzzleWidth;
-        const posY = y * puzzleHeight;
-        yield new Puzzle(
-          this.image.cut(posX, posY, puzzleWidth, puzzleHeight),
-          { x: posX, y: posY }
-        );
-      }
-    }
+  async initPuzzles(puzzles: PuzzlesFactory): Promise<void> {
+    this.puzzles = await puzzles();
   }
 
   handlerMouseMove = (mousePosition: MousePosition): void => {
-    this.puzzles.forEach((p) => p.handlerMouseMove(mousePosition));
+    // this.puzzles.forEach((p) => p.handlerMouseMove(mousePosition));
   };
 
   draw(ctx: CanvasRenderingContext2D): void {
-    ImageJS.clearCanvas(ctx);
     this.puzzles.forEach((puzzle) => puzzle.draw(ctx));
   }
 }

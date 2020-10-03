@@ -18,6 +18,8 @@ export class Board {
 
   private puzzles: Puzzle[] = [];
 
+  private activePuzzle: Puzzle | null = null;
+
   constructor(
     puzzles: PuzzlesFactory,
     { puzzleWidth, puzzleHeight, gridSize }: BoardOptions
@@ -33,8 +35,28 @@ export class Board {
     this.puzzles = await puzzles();
   }
 
+  puzzleResolver({ offsetX, offsetY }: MousePosition): Puzzle | undefined {
+    const marginW = 35;
+    const marginH = 20;
+    return this.puzzles.find(
+      ({ coordinates: { x, y } }) =>
+        offsetX > x + marginW &&
+        offsetX < x + (this.puzzleWidth - marginW) &&
+        offsetY > y + marginH &&
+        offsetY < y + (this.puzzleHeight - marginH)
+    );
+  }
+
   handlerMouseMove = (mousePosition: MousePosition): void => {
-    // this.puzzles.forEach((p) => p.handlerMouseMove(mousePosition));
+    const resolvedPuzzel = this.puzzleResolver(mousePosition);
+    if (resolvedPuzzel && resolvedPuzzel !== this.activePuzzle) {
+      this.activePuzzle?.blur();
+      this.activePuzzle = resolvedPuzzel;
+      this.activePuzzle.focus();
+    } else if (!resolvedPuzzel) {
+      this.activePuzzle?.blur();
+      this.activePuzzle = null;
+    }
   };
 
   draw(ctx: CanvasRenderingContext2D): void {

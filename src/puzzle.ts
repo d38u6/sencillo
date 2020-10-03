@@ -18,7 +18,7 @@ export class Puzzle {
 
   constructor(
     private readonly originalSource: OffscreenCanvas,
-    private coordinates: Coordinates
+    public coordinates: Coordinates
   ) {
     this.resolution = {
       width: originalSource.width,
@@ -34,15 +34,19 @@ export class Puzzle {
   }
 
   focus(): void {
-    this.isActive = true;
-    this.redrawSource();
-    this.addBorder(borders.active);
+    if (!this.isActive) {
+      this.isActive = true;
+      this.redrawSource();
+      this.addBorder(borders.active);
+    }
   }
 
   blur(): void {
-    this.isActive = false;
-    this.redrawSource();
-    this.addBorder(borders.common);
+    if (this.isActive) {
+      this.isActive = false;
+      this.redrawSource();
+      this.addBorder(borders.common);
+    }
   }
 
   // Draw Methods

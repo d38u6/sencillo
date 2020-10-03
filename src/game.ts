@@ -66,10 +66,14 @@ export class Game {
       .rescale({ width: puzzleWidth, height: puzzleHeight })
       .getSource();
 
-    return new Puzzle(emptyPuzzle, {
-      x: lastIndex * puzzleWidth,
-      y: lastIndex * puzzleHeight,
-    });
+    return new Puzzle(
+      emptyPuzzle,
+      {
+        x: lastIndex * puzzleWidth,
+        y: lastIndex * puzzleHeight,
+      },
+      { x: lastIndex, y: lastIndex }
+    );
   }
 
   *createImagePuzzles(): Generator<Puzzle> {
@@ -80,7 +84,11 @@ export class Game {
         const posY = y * puzzleHeight;
         yield new Puzzle(
           this.image.cut(posX, posY, puzzleWidth, puzzleHeight),
-          { x: posX, y: posY }
+          { x: posX, y: posY },
+          {
+            x,
+            y,
+          }
         );
       }
     }

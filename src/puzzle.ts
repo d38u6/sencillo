@@ -19,7 +19,8 @@ export class Puzzle {
 
   constructor(
     private readonly originalSource: OffscreenCanvas,
-    public coordinates: Coordinates
+    public coordinates: Coordinates,
+    public gridPosition: Coordinates
   ) {
     this.resolution = {
       width: originalSource.width,
@@ -52,9 +53,14 @@ export class Puzzle {
     }
   }
 
-  private changePosition({ x, y }: Coordinates): void {
+  private setCoordinates({ x, y }: Coordinates): void {
     this.coordinates.x = x;
     this.coordinates.y = y;
+  }
+
+  private setGridPosition({ x, y }: Coordinates): void {
+    this.gridPosition.x = x;
+    this.gridPosition.y = y;
   }
 
   createMoveAnimation({ x, y }: Coordinates, time: number): () => void {
@@ -65,9 +71,9 @@ export class Puzzle {
       const diffX = Math.abs(x - this.coordinates.x);
       const diffY = Math.abs(y - this.coordinates.y);
       if (diffX <= Math.abs(stepX) && diffY <= Math.abs(stepY)) {
-        this.changePosition({ x, y });
+        this.setCoordinates({ x, y });
       } else {
-        this.changePosition({
+        this.setCoordinates({
           x: this.coordinates.x + stepX,
           y: this.coordinates.y + stepY,
         });
@@ -77,8 +83,11 @@ export class Puzzle {
     return animation;
   }
 
-  moveTo(newCoordinates: Coordinates): void {
-    const animation = this.createMoveAnimation(newCoordinates, 275);
+  moveTo({ x, y }: Coordinates): void {
+    const posX = x * this.resolution.width;
+    const posY = y * this.resolution.height;
+    this.setGridPosition({ x, y });
+    const animation = this.createMoveAnimation({ x: posX, y: posY }, 275);
     requestAnimationFrame(animation);
   }
 

@@ -3,8 +3,6 @@ import { Board } from "./board";
 import { Puzzle } from "./puzzle";
 import { MousePosition, Resolution, SquareNumber } from "./commonTypes";
 
-import imgEmptyPuzzle from "./assets/emptyPuzzle.png";
-
 export interface GameOptions extends Resolution {
   puzzlesNumber: SquareNumber;
 }
@@ -51,20 +49,18 @@ export class Game {
     this.draw();
   }
 
-  createPuzzles = async (): Promise<Puzzle[]> => {
+  createPuzzles = (): Puzzle[] => {
     const imagePuzzles = [...this.createImagePuzzles()];
     imagePuzzles.pop();
-    const emptyPuzzle = await this.createEmptyPuzzle();
+    const emptyPuzzle = this.createEmptyPuzzle();
 
     return [...imagePuzzles, emptyPuzzle];
   };
 
-  async createEmptyPuzzle(): Promise<Puzzle> {
+  createEmptyPuzzle(): Puzzle {
     const { puzzleWidth, puzzleHeight, gridSize } = this;
     const lastIndex = gridSize - 1;
-    const emptyPuzzle = (await ImageJS.createFromFile(imgEmptyPuzzle))
-      .rescale({ width: puzzleWidth, height: puzzleHeight })
-      .getSource();
+    const emptyPuzzle = new OffscreenCanvas(puzzleWidth, puzzleHeight);
 
     return new Puzzle(
       emptyPuzzle,

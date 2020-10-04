@@ -6,7 +6,7 @@ type Border = [number, string];
 type Coordinates = { x: number; y: number };
 
 const borders: { [key: string]: Border } = {
-  common: [5, "#fff"],
+  common: [0.2, "#fff"],
   active: [10, "#007bff"],
 };
 
@@ -112,6 +112,7 @@ export class Puzzle {
 
   draw(ctx: CanvasRenderingContext2D): void {
     const { x, y } = this.coordinates;
+    if (this.isEmpty) ctx.globalCompositeOperation = "destination-over";
     ctx.drawImage(this.source, x, y);
   }
 }

@@ -1,7 +1,7 @@
 import { MousePosition } from "./commonTypes";
 import { Puzzle } from "./puzzle";
 
-type PuzzlesFactory = () => Promise<Puzzle[]>;
+type PuzzlesFactory = () => Puzzle[];
 
 export interface BoardOptions {
   puzzleWidth: number;
@@ -30,11 +30,7 @@ export class Board {
     this.puzzleHeight = puzzleHeight;
     this.gridSize = gridSize;
 
-    this.initPuzzles(puzzles);
-  }
-
-  async initPuzzles(puzzles: PuzzlesFactory): Promise<void> {
-    this.puzzles = await puzzles();
+    this.puzzles = puzzles();
     this.emptyPuzzle = this.puzzles.find(({ isEmpty }) => isEmpty);
   }
 
@@ -78,7 +74,16 @@ export class Board {
   };
 
   handlerClick = (mousePosition: MousePosition): void => {
-    //
+    if (this.emptyPuzzle) {
+      const resolvedPuzzel = this.puzzleResolver(mousePosition);
+      if (resolvedPuzzel && this.isMovePossible(resolvedPuzzel)) {
+        const emptyGirdPos = { ...this.emptyPuzzle.gridPosition };
+        const resolvedGridPos = { ...resolvedPuzzel.gridPosition };
+        resolvedPuzzel.moveTo(emptyGirdPos);
+        this.emptyPuzzle.moveTo(resolvedGridPos);
+        resolvedPuzzel.blur();
+      }
+    }
   };
 
   draw(ctx: CanvasRenderingContext2D): void {

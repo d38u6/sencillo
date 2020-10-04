@@ -1,5 +1,6 @@
 import { MousePosition } from "./commonTypes";
 import { Puzzle } from "./puzzle";
+import { randomBetween } from "./utility";
 
 type PuzzlesFactory = () => Puzzle[];
 
@@ -32,6 +33,21 @@ export class Board {
 
     this.puzzles = puzzles();
     this.emptyPuzzle = this.puzzles.find(({ isEmpty }) => isEmpty);
+    this.mixPuzzles();
+  }
+
+  private mixPuzzles(): void {
+    const usedPositions: string[] = [];
+    this.puzzles.forEach((puzzle) => {
+      let x: number;
+      let y: number;
+      do {
+        x = randomBetween(0, this.gridSize);
+        y = randomBetween(0, this.gridSize);
+      } while (usedPositions.includes(`${x}${y}`));
+      puzzle.moveTo({ x, y });
+      usedPositions.push(`${x}${y}`);
+    });
   }
 
   private puzzleResolver({

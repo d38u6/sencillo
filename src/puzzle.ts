@@ -1,5 +1,5 @@
 import { Resolution } from "./commonTypes";
-import { changeCursor } from "./utility";
+import { setCursor } from "./utility";
 
 type Border = [number, string];
 
@@ -43,7 +43,7 @@ export class Puzzle {
       this.isActive = true;
       this.redrawSource();
       this.addBorder(borders.active);
-      changeCursor("pointer");
+      setCursor("pointer");
     }
   }
 
@@ -52,7 +52,7 @@ export class Puzzle {
       this.isActive = false;
       this.redrawSource();
       this.addBorder(borders.common);
-      changeCursor("default");
+      setCursor("default");
     }
   }
 

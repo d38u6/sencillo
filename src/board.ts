@@ -57,6 +57,13 @@ export class Board {
     return false;
   }
 
+  checkWin(): boolean {
+    for (let i = 0; i < this.puzzles.length; i += 1) {
+      if (!this.puzzles[i].isRightPlace()) return false;
+    }
+    return true;
+  }
+
   handlerMouseMove = (mousePosition: MousePosition): void => {
     const resolvedPuzzel = this.puzzleResolver(mousePosition);
     if (
@@ -82,6 +89,7 @@ export class Board {
         resolvedPuzzel.moveTo(emptyGirdPos);
         this.emptyPuzzle.moveTo(resolvedGridPos);
         resolvedPuzzel.blur();
+        console.log(this.checkWin());
       }
     }
   };

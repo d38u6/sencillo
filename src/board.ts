@@ -10,11 +10,11 @@ export interface BoardOptions {
 }
 
 export class Board {
+  private readonly gridSize: number;
+
   private readonly puzzleWidth: number;
 
   private readonly puzzleHeight: number;
-
-  private readonly gridSize: number;
 
   private puzzles: Puzzle[] = [];
 
@@ -26,15 +26,18 @@ export class Board {
     puzzles: PuzzlesFactory,
     { puzzleWidth, puzzleHeight, gridSize }: BoardOptions
   ) {
+    this.gridSize = gridSize;
     this.puzzleWidth = puzzleWidth;
     this.puzzleHeight = puzzleHeight;
-    this.gridSize = gridSize;
 
     this.puzzles = puzzles();
     this.emptyPuzzle = this.puzzles.find(({ isEmpty }) => isEmpty);
   }
 
-  puzzleResolver({ offsetX, offsetY }: MousePosition): Puzzle | undefined {
+  private puzzleResolver({
+    offsetX,
+    offsetY,
+  }: MousePosition): Puzzle | undefined {
     const marginW = 35;
     const marginH = 20;
     return this.puzzles.find(
@@ -46,7 +49,7 @@ export class Board {
     );
   }
 
-  isMovePossible({ gridPosition, isEmpty }: Puzzle): boolean {
+  private isMovePossible({ gridPosition, isEmpty }: Puzzle): boolean {
     if (this.emptyPuzzle && !isEmpty) {
       const { x, y } = this.emptyPuzzle.gridPosition;
       return (
@@ -57,40 +60,49 @@ export class Board {
     return false;
   }
 
-  checkWin(): boolean {
+  private checkWin(): boolean {
     for (let i = 0; i < this.puzzles.length; i += 1) {
       if (!this.puzzles[i].isRightPlace()) return false;
     }
     return true;
   }
 
+  private movePuzzle(puzzle: Puzzle): void {
+    const tempGridPosition = { ...puzzle.gridPosition };
+    if (this.emptyPuzzle) {
+      puzzle.moveTo({ ...this.emptyPuzzle.gridPosition });
+      this.emptyPuzzle.moveTo({ ...tempGridPosition });
+    }
+  }
+
+  private activatePuzzle(puzzle: Puzzle): void {
+    if (puzzle !== this.activePuzzle) {
+      this.activePuzzle?.blur();
+      this.activePuzzle = puzzle;
+      this.activePuzzle.focus();
+    }
+  }
+
+  private deactivatePuzzle(): void {
+    this.activePuzzle?.blur();
+    this.activePuzzle = null;
+  }
+
   handlerMouseMove = (mousePosition: MousePosition): void => {
     const resolvedPuzzel = this.puzzleResolver(mousePosition);
-    if (
-      resolvedPuzzel &&
-      this.isMovePossible(resolvedPuzzel) &&
-      resolvedPuzzel !== this.activePuzzle
-    ) {
-      this.activePuzzle?.blur();
-      this.activePuzzle = resolvedPuzzel;
-      this.activePuzzle.focus();
+    if (resolvedPuzzel && this.isMovePossible(resolvedPuzzel)) {
+      this.activatePuzzle(resolvedPuzzel);
     } else if (!resolvedPuzzel) {
-      this.activePuzzle?.blur();
-      this.activePuzzle = null;
+      this.deactivatePuzzle();
     }
   };
 
   handlerClick = (mousePosition: MousePosition): void => {
-    if (this.emptyPuzzle) {
-      const resolvedPuzzel = this.puzzleResolver(mousePosition);
-      if (resolvedPuzzel && this.isMovePossible(resolvedPuzzel)) {
-        const emptyGirdPos = { ...this.emptyPuzzle.gridPosition };
-        const resolvedGridPos = { ...resolvedPuzzel.gridPosition };
-        resolvedPuzzel.moveTo(emptyGirdPos);
-        this.emptyPuzzle.moveTo(resolvedGridPos);
-        resolvedPuzzel.blur();
-        console.log(this.checkWin());
-      }
+    const resolvedPuzzel = this.puzzleResolver(mousePosition);
+
+    if (resolvedPuzzel && this.isMovePossible(resolvedPuzzel)) {
+      this.movePuzzle(resolvedPuzzel);
+      this.deactivatePuzzle();
     }
   };
 

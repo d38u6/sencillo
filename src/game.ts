@@ -8,45 +8,65 @@ export interface GameOptions extends Resolution {
 }
 
 export class Game {
+  private renderCtx: CanvasRenderingContext2D | undefined;
+
   private readonly width: number;
 
   private readonly height: number;
 
-  private readonly puzzlesNumber: number;
+  private puzzlesNumber: SquareNumber = 0;
 
-  private readonly gridSize: number;
+  private gridSize = 0;
 
-  private readonly puzzleWidth: number;
+  private puzzleWidth = 0;
 
-  private readonly puzzleHeight: number;
+  private puzzleHeight = 0;
 
-  private readonly board: Board;
+  private readonly image: ImageJS;
+
+  private board: Board | undefined;
 
   private animatedReq = 0;
 
   constructor(
-    private readonly renderCtx: CanvasRenderingContext2D,
-    private readonly image: ImageJS,
-    { width, height, puzzlesNumber }: GameOptions
+    divElId: string,
+    image: ImageJS,
+    { puzzlesNumber, width, height }: GameOptions
   ) {
     this.width = width;
     this.height = height;
+    this.image = image.rescale({ width, height });
+    this.initCanvas(divElId);
+    this.initBoard(puzzlesNumber);
+    this.draw();
+  }
 
+  initCanvas(divElId: string): void {
+    const parentDiv = document.getElementById(divElId) as HTMLDivElement;
+    if (!parentDiv) {
+      throw new Error("Cant find div element");
+    }
+    const canvas = document.createElement("canvas");
+    this.renderCtx = canvas.getContext("2d")!;
+    canvas.width = this.width;
+    canvas.height = this.height;
+    canvas.addEventListener("mousemove", this.handlerMouseMove);
+    canvas.addEventListener("click", this.handlerClick);
+    parentDiv.appendChild(canvas);
+  }
+
+  initBoard(puzzlesNumber: SquareNumber): void {
     this.puzzlesNumber = puzzlesNumber;
     this.gridSize = Math.sqrt(puzzlesNumber);
 
-    this.puzzleWidth = width / this.gridSize;
-    this.puzzleHeight = height / this.gridSize;
+    this.puzzleWidth = this.width / this.gridSize;
+    this.puzzleHeight = this.height / this.gridSize;
 
     this.board = new Board(this.createPuzzles, {
       puzzleWidth: this.puzzleWidth,
       puzzleHeight: this.puzzleHeight,
       gridSize: this.gridSize,
     });
-
-    this.initEvents();
-
-    this.draw();
   }
 
   createPuzzles = (): Puzzle[] => {
@@ -92,34 +112,33 @@ export class Game {
   }
 
   calculateMousePosition({ offsetX, offsetY }: MouseEvent): MousePosition {
-    const { canvas } = this.renderCtx;
-    const ratio =
-      this.width > this.height
-        ? this.width / canvas.offsetWidth
-        : this.height / canvas.offsetHeight;
+    if (this.renderCtx) {
+      const { canvas } = this.renderCtx;
+      const ratio =
+        this.width > this.height
+          ? this.width / canvas.offsetWidth
+          : this.height / canvas.offsetHeight;
 
-    return { offsetX: offsetX * ratio, offsetY: offsetY * ratio };
+      return { offsetX: offsetX * ratio, offsetY: offsetY * ratio };
+    }
+    return { offsetX, offsetY };
   }
 
   handlerMouseMove = (e: MouseEvent): void => {
     const mousePosition = this.calculateMousePosition(e);
-    this.board.handlerMouseMove(mousePosition);
+    this.board?.handlerMouseMove(mousePosition);
   };
 
   handlerClick = (e: MouseEvent): void => {
     const mousePosition = this.calculateMousePosition(e);
-    this.board.handlerClick(mousePosition);
+    this.board?.handlerClick(mousePosition);
   };
 
-  initEvents(): void {
-    const { canvas } = this.renderCtx;
-    canvas.addEventListener("mousemove", this.handlerMouseMove);
-    canvas.addEventListener("click", this.handlerClick);
-  }
-
   draw = (): void => {
-    ImageJS.clearCanvas(this.renderCtx);
-    this.board.draw(this.renderCtx);
-    this.animatedReq = requestAnimationFrame(this.draw);
+    if (this.renderCtx) {
+      ImageJS.clearCanvas(this.renderCtx);
+      this.board?.draw(this.renderCtx);
+      this.animatedReq = requestAnimationFrame(this.draw);
+    }
   };
 }

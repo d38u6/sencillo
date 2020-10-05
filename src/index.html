@@ -11,7 +11,21 @@
       <div id="game">
         <div id="canvas-wrapper"></div>
       </div>
-      <div id="dashboard">menu</div>
+      <div id="dashboard">
+        <p>Czas gry: <span id="time">0s</span></p>
+        <p>Liczba ruchów: <span id="moves">0</span></p>
+        <label for="puzzles-number">Poziom trudności</label>
+        <select name="puzzles-number" id="puzzles-number">
+          <option value="volvo">9 Puzzli</option>
+          <option value="saab">16 Puzzli</option>
+          <option value="mercedes">25 Puzzli</option>
+          <option value="audi">36 Puzzli</option>
+        </select>
+        <br />
+        <br />
+        <button id="preview">Podgląd</button>
+        <button id="new-game">Zacznij od nowa</button>
+      </div>
     </section>
     <footer>about</footer>
     <script src="app.ts"></script>

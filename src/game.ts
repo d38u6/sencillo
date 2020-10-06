@@ -14,7 +14,7 @@ export class Game {
 
   private readonly height: number;
 
-  private puzzlesNumber: SquareNumber = 0;
+  private puzzlesNumber: SquareNumber;
 
   private gridSize = 0;
 
@@ -26,6 +26,8 @@ export class Game {
 
   private board: Board | undefined;
 
+  private previewMode = false;
+
   private animatedReq = 0;
 
   constructor(
@@ -35,9 +37,10 @@ export class Game {
   ) {
     this.width = width;
     this.height = height;
+    this.puzzlesNumber = puzzlesNumber;
     this.image = image.rescale({ width, height });
     this.initCanvas(divElId);
-    this.initBoard(puzzlesNumber);
+    this.initBoard();
     this.draw();
   }
 
@@ -55,9 +58,8 @@ export class Game {
     parentDiv.appendChild(canvas);
   }
 
-  initBoard(puzzlesNumber: SquareNumber): void {
-    this.puzzlesNumber = puzzlesNumber;
-    this.gridSize = Math.sqrt(puzzlesNumber);
+  initBoard(): void {
+    this.gridSize = Math.sqrt(this.puzzlesNumber);
 
     this.puzzleWidth = this.width / this.gridSize;
     this.puzzleHeight = this.height / this.gridSize;
@@ -69,7 +71,7 @@ export class Game {
     });
   }
 
-  createPuzzles = (): Puzzle[] => {
+  private createPuzzles = (): Puzzle[] => {
     const imagePuzzles = [...this.createImagePuzzles()];
     imagePuzzles.pop();
     const emptyPuzzle = this.createEmptyPuzzle();
@@ -77,7 +79,7 @@ export class Game {
     return [...imagePuzzles, emptyPuzzle];
   };
 
-  createEmptyPuzzle(): Puzzle {
+  private createEmptyPuzzle(): Puzzle {
     const { puzzleWidth, puzzleHeight, gridSize } = this;
     const lastIndex = gridSize - 1;
     const emptyPuzzle = new OffscreenCanvas(puzzleWidth, puzzleHeight);
@@ -93,7 +95,7 @@ export class Game {
     );
   }
 
-  *createImagePuzzles(): Generator<Puzzle> {
+  private *createImagePuzzles(): Generator<Puzzle> {
     const { puzzleWidth, puzzleHeight, gridSize } = this;
     for (let x = 0; x < gridSize; x += 1) {
       for (let y = 0; y < gridSize; y += 1) {
@@ -111,7 +113,10 @@ export class Game {
     }
   }
 
-  calculateMousePosition({ offsetX, offsetY }: MouseEvent): MousePosition {
+  private calculateMousePosition({
+    offsetX,
+    offsetY,
+  }: MouseEvent): MousePosition {
     if (this.renderCtx) {
       const { canvas } = this.renderCtx;
       const ratio =
@@ -134,10 +139,28 @@ export class Game {
     this.board?.handlerClick(mousePosition);
   };
 
+  switchPreviewMode = (): void => {
+    this.previewMode = !this.previewMode;
+  };
+
+  changeLevel = (puzzlesNumber: SquareNumber): void => {
+    this.puzzlesNumber = puzzlesNumber;
+    this.initBoard();
+  };
+
+  start = (): void => {
+    this.initBoard();
+    this.board?.mixPuzzles();
+  };
+
   draw = (): void => {
     if (this.renderCtx) {
       ImageJS.clearCanvas(this.renderCtx);
-      this.board?.draw(this.renderCtx);
+      if (this.previewMode) {
+        this.image.draw(this.renderCtx);
+      } else {
+        this.board?.draw(this.renderCtx);
+      }
       this.animatedReq = requestAnimationFrame(this.draw);
     }
   };

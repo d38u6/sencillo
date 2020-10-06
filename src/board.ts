@@ -33,10 +33,9 @@ export class Board {
 
     this.puzzles = puzzles();
     this.emptyPuzzle = this.puzzles.find(({ isEmpty }) => isEmpty);
-    this.mixPuzzles();
   }
 
-  private mixPuzzles(): void {
+  mixPuzzles(): void {
     const usedPositions: string[] = [];
     this.puzzles.forEach((puzzle) => {
       let x: number;

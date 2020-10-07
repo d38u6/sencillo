@@ -1,4 +1,4 @@
-export type SquareNumber = 0 | 9 | 16 | 25 | 36 | 49 | 64;
+export type SquareNumber = 9 | 16 | 25 | 36 | 49 | 64;
 
 export interface MousePosition {
   offsetX: number;

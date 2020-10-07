@@ -3,6 +3,16 @@ import { Board } from "./board";
 import { Puzzle } from "./puzzle";
 import { MousePosition, Resolution, SquareNumber } from "./commonTypes";
 
+export interface GameState {
+  timeCounter: number;
+  moveCounter: number;
+  puzzlesNumber: SquareNumber;
+  isStart: boolean;
+  previewMode: boolean;
+}
+
+type Observer = (gameState: GameState) => void;
+
 export interface GameOptions extends Resolution {
   puzzlesNumber: SquareNumber;
 }
@@ -30,6 +40,8 @@ export class Game {
 
   private animatedReq = 0;
 
+  private observers: Observer[] = [];
+
   constructor(
     divElId: string,
     image: ImageJS,
@@ -44,7 +56,7 @@ export class Game {
     this.draw();
   }
 
-  initCanvas(divElId: string): void {
+  private initCanvas(divElId: string): void {
     const parentDiv = document.getElementById(divElId) as HTMLDivElement;
     if (!parentDiv) {
       throw new Error("Cant find div element");
@@ -58,7 +70,7 @@ export class Game {
     parentDiv.appendChild(canvas);
   }
 
-  initBoard(): void {
+  private initBoard(): void {
     this.gridSize = Math.sqrt(this.puzzlesNumber);
 
     this.puzzleWidth = this.width / this.gridSize;
@@ -129,15 +141,37 @@ export class Game {
     return { offsetX, offsetY };
   }
 
-  handlerMouseMove = (e: MouseEvent): void => {
+  private handlerMouseMove = (e: MouseEvent): void => {
     const mousePosition = this.calculateMousePosition(e);
     this.board?.handlerMouseMove(mousePosition);
   };
 
-  handlerClick = (e: MouseEvent): void => {
+  private handlerClick = (e: MouseEvent): void => {
     const mousePosition = this.calculateMousePosition(e);
     this.board?.handlerClick(mousePosition);
   };
+
+  // observer Methods
+  addObserver(observer: Observer): void {
+    if (!this.observers.includes(observer)) {
+      this.observers = [...this.observers, observer];
+    }
+  }
+
+  removeObserver(observer: Observer): void {
+    this.observers = this.observers.filter((o) => o !== observer);
+  }
+
+  private update(): void {
+    const gameState = {
+      puzzlesNumber: this.puzzlesNumber,
+      timeCounter: 0,
+      moveCounter: 0,
+      isStart: false,
+      previewMode: this.previewMode,
+    };
+    this.observers.forEach((observer) => observer(gameState));
+  }
 
   switchPreviewMode = (): void => {
     this.previewMode = !this.previewMode;
@@ -154,6 +188,7 @@ export class Game {
   };
 
   draw = (): void => {
+    this.update();
     if (this.renderCtx) {
       ImageJS.clearCanvas(this.renderCtx);
       if (this.previewMode) {

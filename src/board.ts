@@ -23,6 +23,8 @@ export class Board {
 
   private emptyPuzzle: Puzzle | undefined;
 
+  private locked = true;
+
   constructor(
     puzzles: PuzzlesFactory,
     { puzzleWidth, puzzleHeight, gridSize }: BoardOptions
@@ -35,7 +37,7 @@ export class Board {
     this.emptyPuzzle = this.puzzles.find(({ isEmpty }) => isEmpty);
   }
 
-  mixPuzzles(): void {
+  shufflePuzzles(): void {
     const usedPositions: string[] = [];
     this.puzzles.forEach((puzzle) => {
       let x: number;
@@ -113,6 +115,7 @@ export class Board {
   };
 
   handlerClick = (mousePosition: MousePosition): void => {
+    if (this.locked) return;
     const resolvedPuzzel = this.puzzleResolver(mousePosition);
 
     if (resolvedPuzzel && this.isMovePossible(resolvedPuzzel)) {
@@ -120,6 +123,10 @@ export class Board {
       this.deactivatePuzzle();
     }
   };
+
+  unlock(): void {
+    this.locked = false;
+  }
 
   draw(ctx: CanvasRenderingContext2D): void {
     this.puzzles.forEach((puzzle) => puzzle.draw(ctx));

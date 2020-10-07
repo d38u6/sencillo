@@ -19,6 +19,8 @@ export class Puzzle {
 
   public readonly destiny: Coordinates;
 
+  private moveAnimReq = 0;
+
   constructor(
     private readonly originalSource: OffscreenCanvas,
     public coordinates: Coordinates,
@@ -74,6 +76,7 @@ export class Puzzle {
   }
 
   private createMoveAnimation({ x, y }: Coordinates, time: number): () => void {
+    cancelAnimationFrame(this.moveAnimReq);
     const stepX = (x - this.coordinates.x) / (time / 16);
     const stepY = (y - this.coordinates.y) / (time / 16);
 
@@ -87,7 +90,7 @@ export class Puzzle {
           x: this.coordinates.x + stepX,
           y: this.coordinates.y + stepY,
         });
-        requestAnimationFrame(animation);
+        this.moveAnimReq = requestAnimationFrame(animation);
       }
     };
     return animation;
@@ -98,7 +101,7 @@ export class Puzzle {
     const posY = y * this.resolution.height;
     this.setGridPosition({ x, y });
     const animation = this.createMoveAnimation({ x: posX, y: posY }, 275);
-    requestAnimationFrame(animation);
+    this.moveAnimReq = requestAnimationFrame(animation);
   }
 
   // Draw Methods

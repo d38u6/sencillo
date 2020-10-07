@@ -1,5 +1,6 @@
-import { MousePosition, SquareNumber, Resolution } from "./commonTypes";
+import { MousePosition, SquareNumber, Resolution, Level } from "./commonTypes";
 import { Puzzle } from "./puzzle";
+import { PuzzleResolver } from "./PuzzleResolver";
 import { PuzzlesFactory } from "./PuzzlesFactory";
 import { randomBetween } from "./utility";
 
@@ -8,11 +9,11 @@ export interface BoardOptions extends Resolution {
 }
 
 export class Board {
-  private readonly gridSize: number;
-
   private readonly puzzleWidth: number;
 
   private readonly puzzleHeight: number;
+
+  private gridSize: number;
 
   private puzzles: Puzzle[] = [];
 
@@ -23,19 +24,24 @@ export class Board {
   private locked = true;
 
   constructor(
-    puzzlesFactory: PuzzlesFactory,
+    private readonly puzzlesFactory: PuzzlesFactory,
+    private readonly puzzleResolver: PuzzleResolver,
     { width, height, puzzlesNumber }: BoardOptions
   ) {
     this.gridSize = Math.sqrt(puzzlesNumber);
     this.puzzleWidth = width / this.gridSize;
     this.puzzleHeight = height / this.gridSize;
 
-    this.puzzles = puzzlesFactory.createPuzzles({
+    this.puzzles = this.createPuzzles();
+    this.emptyPuzzle = this.puzzles.find(({ isEmpty }) => isEmpty);
+  }
+
+  private createPuzzles(): Puzzle[] {
+    return this.puzzlesFactory.createPuzzles({
       puzzleWidth: this.puzzleWidth,
       puzzleHeight: this.puzzleHeight,
       gridSize: this.gridSize,
     });
-    this.emptyPuzzle = this.puzzles.find(({ isEmpty }) => isEmpty);
   }
 
   shufflePuzzles(): void {
@@ -50,21 +56,6 @@ export class Board {
       puzzle.moveTo({ x, y });
       usedPositions.push(`${x}${y}`);
     });
-  }
-
-  private puzzleResolver({
-    offsetX,
-    offsetY,
-  }: MousePosition): Puzzle | undefined {
-    const marginW = 35;
-    const marginH = 20;
-    return this.puzzles.find(
-      ({ coordinates: { x, y } }) =>
-        offsetX > x + marginW &&
-        offsetX < x + (this.puzzleWidth - marginW) &&
-        offsetY > y + marginH &&
-        offsetY < y + (this.puzzleHeight - marginH)
-    );
   }
 
   private isMovePossible({ gridPosition, isEmpty }: Puzzle): boolean {
@@ -107,7 +98,10 @@ export class Board {
   }
 
   handlerMouseMove = (mousePosition: MousePosition): void => {
-    const resolvedPuzzel = this.puzzleResolver(mousePosition);
+    const resolvedPuzzel = this.puzzleResolver.reslove(
+      this.puzzles,
+      mousePosition
+    );
     if (resolvedPuzzel && this.isMovePossible(resolvedPuzzel)) {
       this.activatePuzzle(resolvedPuzzel);
     } else if (!resolvedPuzzel) {
@@ -117,13 +111,21 @@ export class Board {
 
   handlerClick = (mousePosition: MousePosition): void => {
     if (this.locked) return;
-    const resolvedPuzzel = this.puzzleResolver(mousePosition);
+    const resolvedPuzzel = this.puzzleResolver.reslove(
+      this.puzzles,
+      mousePosition
+    );
 
     if (resolvedPuzzel && this.isMovePossible(resolvedPuzzel)) {
       this.movePuzzle(resolvedPuzzel);
       this.deactivatePuzzle();
     }
   };
+
+  changePuzzlesNumber(puzzleNumber: Level): void {
+    this.gridSize = Math.sqrt(puzzleNumber);
+    this.puzzles = this.createPuzzles();
+  }
 
   unlock(): void {
     this.locked = false;

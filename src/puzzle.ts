@@ -15,7 +15,7 @@ export class Puzzle {
 
   private source: OffscreenCanvas;
 
-  private readonly resolution: Resolution;
+  readonly resolution: Resolution;
 
   public readonly destiny: Coordinates;
 

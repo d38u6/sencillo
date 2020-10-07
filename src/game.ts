@@ -3,6 +3,7 @@ import { Board } from "./board";
 import { MousePosition, SquareNumber, Level } from "./commonTypes";
 import { Timer } from "./Timer";
 import { PuzzlesFactory } from "./PuzzlesFactory";
+import { PuzzleResolver } from "./PuzzleResolver";
 
 export interface GameState {
   timeCounter: number;
@@ -52,7 +53,7 @@ export class Game {
 
     this.puzzlesFactory = new PuzzlesFactory(this.image);
 
-    this.board = new Board(this.puzzlesFactory, {
+    this.board = new Board(this.puzzlesFactory, new PuzzleResolver(renderCtx), {
       width: this.width,
       height: this.height,
       puzzlesNumber: this.level,
@@ -65,35 +66,9 @@ export class Game {
 
   private initEvents(): void {
     const { canvas } = this.renderCtx;
-    canvas.addEventListener("mousemove", this.handlerMouseMove);
-    canvas.addEventListener("click", this.handlerClick);
+    canvas.addEventListener("mousemove", this.board.handlerMouseMove);
+    canvas.addEventListener("click", this.board.handlerClick);
   }
-
-  private calculateMousePosition({
-    offsetX,
-    offsetY,
-  }: MouseEvent): MousePosition {
-    if (this.renderCtx) {
-      const { canvas } = this.renderCtx;
-      const ratio =
-        this.width > this.height
-          ? this.width / canvas.offsetWidth
-          : this.height / canvas.offsetHeight;
-
-      return { offsetX: offsetX * ratio, offsetY: offsetY * ratio };
-    }
-    return { offsetX, offsetY };
-  }
-
-  private handlerMouseMove = (e: MouseEvent): void => {
-    const mousePosition = this.calculateMousePosition(e);
-    this.board?.handlerMouseMove(mousePosition);
-  };
-
-  private handlerClick = (e: MouseEvent): void => {
-    const mousePosition = this.calculateMousePosition(e);
-    this.board?.handlerClick(mousePosition);
-  };
 
   // observer Methods
   addObserver(observer: Observer): void {
@@ -139,7 +114,7 @@ export class Game {
     if (this.previewMode) {
       this.image.draw(this.renderCtx);
     } else {
-      this.board?.draw(this.renderCtx);
+      this.board.draw(this.renderCtx);
     }
     this.animatedReq = requestAnimationFrame(this.draw);
   };

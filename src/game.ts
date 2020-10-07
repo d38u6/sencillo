@@ -1,7 +1,6 @@
 import { ImageJS } from "./ImageJS/ImageJS";
 import { Board } from "./board";
-import { Puzzle } from "./puzzle";
-import { MousePosition, SquareNumber, Level, Resolution } from "./commonTypes";
+import { MousePosition, SquareNumber, Level } from "./commonTypes";
 import { Timer } from "./Timer";
 import { PuzzlesFactory } from "./PuzzlesFactory";
 
@@ -13,15 +12,13 @@ export interface GameState {
   previewMode: boolean;
 }
 
-export interface GameOptions extends Resolution {
+export interface GameOptions {
   level: Level;
 }
 
 type Observer = (gameState: GameState) => void;
 
 export class Game {
-  private renderCtx: CanvasRenderingContext2D | undefined;
-
   private readonly width: number;
 
   private readonly height: number;
@@ -43,39 +40,33 @@ export class Game {
   private readonly timer = new Timer();
 
   constructor(
-    divElId: string,
+    private readonly renderCtx: CanvasRenderingContext2D,
     image: ImageJS,
-    { level, width, height }: GameOptions
+    { level }: GameOptions
   ) {
-    this.width = width;
-    this.height = height;
+    this.width = renderCtx.canvas.width;
+    this.height = renderCtx.canvas.height;
     this.level = level;
-    this.image = image.rescale({ width, height });
+
+    this.image = image.rescale({ width: this.width, height: this.height });
+
     this.puzzlesFactory = new PuzzlesFactory(this.image);
 
-    this.initCanvas(divElId);
-
     this.board = new Board(this.puzzlesFactory, {
-      width,
-      height,
+      width: this.width,
+      height: this.height,
       puzzlesNumber: this.level,
     });
+
+    this.initEvents();
 
     this.draw();
   }
 
-  private initCanvas(divElId: string): void {
-    const parentDiv = document.getElementById(divElId) as HTMLDivElement;
-    if (!parentDiv) {
-      throw new Error("Cant find div element");
-    }
-    const canvas = document.createElement("canvas");
-    this.renderCtx = canvas.getContext("2d")!;
-    canvas.width = this.width;
-    canvas.height = this.height;
+  private initEvents(): void {
+    const { canvas } = this.renderCtx;
     canvas.addEventListener("mousemove", this.handlerMouseMove);
     canvas.addEventListener("click", this.handlerClick);
-    parentDiv.appendChild(canvas);
   }
 
   private calculateMousePosition({
@@ -137,20 +128,19 @@ export class Game {
 
   start = (): void => {
     this.timer.start();
-    this.board?.shufflePuzzles();
-    this.board?.unlock();
+    this.board.shufflePuzzles();
+    this.board.unlock();
   };
 
   draw = (): void => {
     this.update();
-    if (this.renderCtx) {
-      ImageJS.clearCanvas(this.renderCtx);
-      if (this.previewMode) {
-        this.image.draw(this.renderCtx);
-      } else {
-        this.board?.draw(this.renderCtx);
-      }
-      this.animatedReq = requestAnimationFrame(this.draw);
+
+    ImageJS.clearCanvas(this.renderCtx);
+    if (this.previewMode) {
+      this.image.draw(this.renderCtx);
+    } else {
+      this.board?.draw(this.renderCtx);
     }
+    this.animatedReq = requestAnimationFrame(this.draw);
   };
 }

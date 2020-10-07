@@ -1,6 +1,7 @@
 import { ImageJS } from "./ImageJS/ImageJS";
 import { Game } from "./game";
 import { DashboardUI } from "./dashboardUI";
+import { GameUI } from "./GameUI";
 
 function withConfirm(callback: () => void): void {
   // eslint-disable-next-line no-alert
@@ -11,9 +12,10 @@ function withConfirm(callback: () => void): void {
 
 async function main(): Promise<void> {
   const image = await ImageJS.createFromFile("./images/1920x1280.jpg");
-  const game = new Game("canvas-wrapper", image, {
-    width: 1920,
-    height: 1080,
+
+  const gameUI = new GameUI("canvas-wrapper", { width: 1920, height: 1080 });
+
+  const game = new Game(gameUI.renderCtx, image, {
     level: 16,
   });
 

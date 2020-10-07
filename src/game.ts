@@ -3,6 +3,7 @@ import { Board } from "./board";
 import { Puzzle } from "./puzzle";
 import { MousePosition, SquareNumber, Level, Resolution } from "./commonTypes";
 import { Timer } from "./Timer";
+import { PuzzlesFactory } from "./PuzzlesFactory";
 
 export interface GameState {
   timeCounter: number;
@@ -25,17 +26,13 @@ export class Game {
 
   private readonly height: number;
 
-  private puzzlesNumber: SquareNumber;
-
-  private gridSize = 0;
-
-  private puzzleWidth = 0;
-
-  private puzzleHeight = 0;
+  private level: Level;
 
   private readonly image: ImageJS;
 
   private readonly board: Board;
+
+  private readonly puzzlesFactory: PuzzlesFactory;
 
   private previewMode = false;
 
@@ -52,14 +49,18 @@ export class Game {
   ) {
     this.width = width;
     this.height = height;
-    this.puzzlesNumber = level;
+    this.level = level;
     this.image = image.rescale({ width, height });
+    this.puzzlesFactory = new PuzzlesFactory(this.image);
+
     this.initCanvas(divElId);
-    this.board = new Board(this.createPuzzles, {
+
+    this.board = new Board(this.puzzlesFactory, {
       width,
       height,
-      puzzlesNumber: level,
+      puzzlesNumber: this.level,
     });
+
     this.draw();
   }
 
@@ -75,61 +76,6 @@ export class Game {
     canvas.addEventListener("mousemove", this.handlerMouseMove);
     canvas.addEventListener("click", this.handlerClick);
     parentDiv.appendChild(canvas);
-  }
-
-  // private initBoard(): void {
-  //   this.gridSize = Math.sqrt(this.puzzlesNumber);
-
-  //   this.puzzleWidth = this.width / this.gridSize;
-  //   this.puzzleHeight = this.height / this.gridSize;
-
-  //   this.board = new Board(this.createPuzzles, {
-  //     puzzleWidth: this.puzzleWidth,
-  //     puzzleHeight: this.puzzleHeight,
-  //     gridSize: this.gridSize,
-  //   });
-  // }
-
-  private createPuzzles = (): Puzzle[] => {
-    const imagePuzzles = [...this.createImagePuzzles()];
-    imagePuzzles.pop();
-    const emptyPuzzle = this.createEmptyPuzzle();
-
-    return [...imagePuzzles, emptyPuzzle];
-  };
-
-  private createEmptyPuzzle(): Puzzle {
-    const { puzzleWidth, puzzleHeight, gridSize } = this;
-    const lastIndex = gridSize - 1;
-    const emptyPuzzle = new OffscreenCanvas(puzzleWidth, puzzleHeight);
-
-    return new Puzzle(
-      emptyPuzzle,
-      {
-        x: lastIndex * puzzleWidth,
-        y: lastIndex * puzzleHeight,
-      },
-      { x: lastIndex, y: lastIndex },
-      true
-    );
-  }
-
-  private *createImagePuzzles(): Generator<Puzzle> {
-    const { puzzleWidth, puzzleHeight, gridSize } = this;
-    for (let x = 0; x < gridSize; x += 1) {
-      for (let y = 0; y < gridSize; y += 1) {
-        const posX = x * puzzleWidth;
-        const posY = y * puzzleHeight;
-        yield new Puzzle(
-          this.image.cut(posX, posY, puzzleWidth, puzzleHeight),
-          { x: posX, y: posY },
-          {
-            x,
-            y,
-          }
-        );
-      }
-    }
   }
 
   private calculateMousePosition({
@@ -171,7 +117,7 @@ export class Game {
 
   private update(): void {
     const gameState = {
-      puzzlesNumber: this.puzzlesNumber,
+      puzzlesNumber: this.level,
       timeCounter: 0,
       moveCounter: 0,
       isStart: false,
@@ -184,8 +130,8 @@ export class Game {
     this.previewMode = !this.previewMode;
   };
 
-  changeLevel = (puzzlesNumber: SquareNumber): void => {
-    this.puzzlesNumber = puzzlesNumber;
+  changeLevel = (level: Level): void => {
+    this.level = level;
     // this.initBoard();
   };
 

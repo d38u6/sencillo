@@ -1,8 +1,7 @@
 import { MousePosition, SquareNumber, Resolution } from "./commonTypes";
 import { Puzzle } from "./puzzle";
+import { PuzzlesFactory } from "./PuzzlesFactory";
 import { randomBetween } from "./utility";
-
-type PuzzlesFactory = () => Puzzle[];
 
 export interface BoardOptions extends Resolution {
   puzzlesNumber: SquareNumber;
@@ -24,14 +23,18 @@ export class Board {
   private locked = true;
 
   constructor(
-    puzzles: PuzzlesFactory,
+    puzzlesFactory: PuzzlesFactory,
     { width, height, puzzlesNumber }: BoardOptions
   ) {
     this.gridSize = Math.sqrt(puzzlesNumber);
     this.puzzleWidth = width / this.gridSize;
     this.puzzleHeight = height / this.gridSize;
 
-    this.puzzles = puzzles();
+    this.puzzles = puzzlesFactory.createPuzzles({
+      puzzleWidth: this.puzzleWidth,
+      puzzleHeight: this.puzzleHeight,
+      gridSize: this.gridSize,
+    });
     this.emptyPuzzle = this.puzzles.find(({ isEmpty }) => isEmpty);
   }
 

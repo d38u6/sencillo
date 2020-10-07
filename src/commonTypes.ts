@@ -1,3 +1,10 @@
+export enum Level {
+  VeryEasy = 9,
+  Easy = 16,
+  Medium = 25,
+  Hard = 36,
+}
+
 export type SquareNumber = 9 | 16 | 25 | 36 | 49 | 64;
 
 export interface MousePosition {

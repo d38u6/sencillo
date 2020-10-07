@@ -14,7 +14,7 @@ async function main(): Promise<void> {
   const game = new Game("canvas-wrapper", image, {
     width: 1920,
     height: 1080,
-    puzzlesNumber: 16,
+    level: 16,
   });
 
   const dashboardUI = new DashboardUI();

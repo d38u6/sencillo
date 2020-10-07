@@ -1,7 +1,8 @@
 import { ImageJS } from "./ImageJS/ImageJS";
 import { Board } from "./board";
 import { Puzzle } from "./puzzle";
-import { MousePosition, Resolution, SquareNumber } from "./commonTypes";
+import { MousePosition, SquareNumber, Level, Resolution } from "./commonTypes";
+import { Timer } from "./Timer";
 
 export interface GameState {
   timeCounter: number;
@@ -11,11 +12,11 @@ export interface GameState {
   previewMode: boolean;
 }
 
-type Observer = (gameState: GameState) => void;
-
 export interface GameOptions extends Resolution {
-  puzzlesNumber: SquareNumber;
+  level: Level;
 }
+
+type Observer = (gameState: GameState) => void;
 
 export class Game {
   private renderCtx: CanvasRenderingContext2D | undefined;
@@ -34,7 +35,7 @@ export class Game {
 
   private readonly image: ImageJS;
 
-  private board: Board | undefined;
+  private readonly board: Board;
 
   private previewMode = false;
 
@@ -42,17 +43,23 @@ export class Game {
 
   private observers: Observer[] = [];
 
+  private readonly timer = new Timer();
+
   constructor(
     divElId: string,
     image: ImageJS,
-    { puzzlesNumber, width, height }: GameOptions
+    { level, width, height }: GameOptions
   ) {
     this.width = width;
     this.height = height;
-    this.puzzlesNumber = puzzlesNumber;
+    this.puzzlesNumber = level;
     this.image = image.rescale({ width, height });
     this.initCanvas(divElId);
-    this.initBoard();
+    this.board = new Board(this.createPuzzles, {
+      width,
+      height,
+      puzzlesNumber: level,
+    });
     this.draw();
   }
 
@@ -70,18 +77,18 @@ export class Game {
     parentDiv.appendChild(canvas);
   }
 
-  private initBoard(): void {
-    this.gridSize = Math.sqrt(this.puzzlesNumber);
+  // private initBoard(): void {
+  //   this.gridSize = Math.sqrt(this.puzzlesNumber);
 
-    this.puzzleWidth = this.width / this.gridSize;
-    this.puzzleHeight = this.height / this.gridSize;
+  //   this.puzzleWidth = this.width / this.gridSize;
+  //   this.puzzleHeight = this.height / this.gridSize;
 
-    this.board = new Board(this.createPuzzles, {
-      puzzleWidth: this.puzzleWidth,
-      puzzleHeight: this.puzzleHeight,
-      gridSize: this.gridSize,
-    });
-  }
+  //   this.board = new Board(this.createPuzzles, {
+  //     puzzleWidth: this.puzzleWidth,
+  //     puzzleHeight: this.puzzleHeight,
+  //     gridSize: this.gridSize,
+  //   });
+  // }
 
   private createPuzzles = (): Puzzle[] => {
     const imagePuzzles = [...this.createImagePuzzles()];
@@ -179,12 +186,13 @@ export class Game {
 
   changeLevel = (puzzlesNumber: SquareNumber): void => {
     this.puzzlesNumber = puzzlesNumber;
-    this.initBoard();
+    // this.initBoard();
   };
 
   start = (): void => {
-    this.initBoard();
-    this.board?.mixPuzzles();
+    this.timer.start();
+    this.board?.shufflePuzzles();
+    this.board?.unlock();
   };
 
   draw = (): void => {

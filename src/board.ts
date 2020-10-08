@@ -1,39 +1,51 @@
-import { MousePosition, SquareNumber, Resolution, Level } from "./commonTypes";
+import { MousePosition, Resolution, Level } from "./commonTypes";
 import { Puzzle } from "./puzzle";
 import { PuzzleResolver } from "./PuzzleResolver";
 import { PuzzlesFactory } from "./PuzzlesFactory";
 import { randomBetween } from "./utility";
 
 export interface BoardOptions extends Resolution {
-  puzzlesNumber: SquareNumber;
+  puzzlesNumber: Level;
 }
 
 export class Board {
-  private readonly puzzleWidth: number;
+  private readonly width: number;
 
-  private readonly puzzleHeight: number;
+  private readonly height: number;
 
-  private gridSize: number;
-
-  private puzzles: Puzzle[] = [];
+  private puzzlesNumber: Level;
 
   private activePuzzle: Puzzle | null = null;
 
-  private emptyPuzzle: Puzzle | undefined;
-
   private locked = true;
+
+  private puzzles: Puzzle[];
 
   constructor(
     private readonly puzzlesFactory: PuzzlesFactory,
     private readonly puzzleResolver: PuzzleResolver,
     { width, height, puzzlesNumber }: BoardOptions
   ) {
-    this.gridSize = Math.sqrt(puzzlesNumber);
-    this.puzzleWidth = width / this.gridSize;
-    this.puzzleHeight = height / this.gridSize;
-
+    this.width = width;
+    this.height = height;
+    this.puzzlesNumber = puzzlesNumber;
     this.puzzles = this.createPuzzles();
-    this.emptyPuzzle = this.puzzles.find(({ isEmpty }) => isEmpty);
+  }
+
+  private get gridSize(): number {
+    return Math.sqrt(this.puzzlesNumber);
+  }
+
+  private get puzzleWidth(): number {
+    return this.width / this.gridSize;
+  }
+
+  private get puzzleHeight(): number {
+    return this.height / this.gridSize;
+  }
+
+  private get emptyPuzzle(): Puzzle | undefined {
+    return this.puzzles.find(({ isEmpty }) => isEmpty);
   }
 
   private createPuzzles(): Puzzle[] {
@@ -123,7 +135,7 @@ export class Board {
   };
 
   changePuzzlesNumber(puzzleNumber: Level): void {
-    this.gridSize = Math.sqrt(puzzleNumber);
+    this.puzzlesNumber = puzzleNumber;
     this.puzzles = this.createPuzzles();
   }
 

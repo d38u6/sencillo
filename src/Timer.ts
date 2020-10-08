@@ -19,9 +19,9 @@ export class Timer {
     this._time = 0;
   }
 
-  private formatTime(): string {
-    const min = Math.floor(this._time / 60);
-    const sec = this._time % 60;
+  static formatTime(time: number): string {
+    const min = Math.floor(time / 60);
+    const sec = time % 60;
 
     return `${min} min ${sec} sec`;
   }
@@ -31,6 +31,6 @@ export class Timer {
   }
 
   get formattedTime(): string {
-    return this.formatTime();
+    return Timer.formatTime(this._time);
   }
 }

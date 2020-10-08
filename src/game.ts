@@ -1,14 +1,14 @@
 import { ImageJS } from "./ImageJS/ImageJS";
 import { Board } from "./board";
-import { MousePosition, SquareNumber, Level } from "./commonTypes";
+import { Level } from "./commonTypes";
 import { Timer } from "./Timer";
 import { PuzzlesFactory } from "./PuzzlesFactory";
 import { PuzzleResolver } from "./PuzzleResolver";
 
 export interface GameState {
-  timeCounter: number;
-  moveCounter: number;
-  puzzlesNumber: SquareNumber;
+  time: number;
+  move: number;
+  level: Level;
   isStart: boolean;
   previewMode: boolean;
 }
@@ -17,7 +17,7 @@ export interface GameOptions {
   level: Level;
 }
 
-type Observer = (gameState: GameState) => void;
+type GameObserver = (gameState: GameState) => void;
 
 export class Game {
   private readonly width: number;
@@ -36,7 +36,7 @@ export class Game {
 
   private animatedReq = 0;
 
-  private observers: Observer[] = [];
+  private observers: GameObserver[] = [];
 
   private readonly timer = new Timer();
 
@@ -61,7 +61,17 @@ export class Game {
 
     this.initEvents();
 
-    this.draw();
+    this.update();
+  }
+
+  get gameState(): GameState {
+    return {
+      time: this.timer.time,
+      move: 0,
+      level: this.level,
+      isStart: false,
+      previewMode: false,
+    };
   }
 
   private initEvents(): void {
@@ -71,25 +81,14 @@ export class Game {
   }
 
   // observer Methods
-  addObserver(observer: Observer): void {
+  addObserver(observer: GameObserver): void {
     if (!this.observers.includes(observer)) {
       this.observers = [...this.observers, observer];
     }
   }
 
-  removeObserver(observer: Observer): void {
+  removeObserver(observer: GameObserver): void {
     this.observers = this.observers.filter((o) => o !== observer);
-  }
-
-  private update(): void {
-    const gameState = {
-      puzzlesNumber: this.level,
-      timeCounter: 0,
-      moveCounter: 0,
-      isStart: false,
-      previewMode: this.previewMode,
-    };
-    this.observers.forEach((observer) => observer(gameState));
   }
 
   switchPreviewMode = (): void => {
@@ -98,7 +97,7 @@ export class Game {
 
   changeLevel = (level: Level): void => {
     this.level = level;
-    // this.initBoard();
+    this.board.changePuzzlesNumber(level);
   };
 
   start = (): void => {
@@ -107,15 +106,18 @@ export class Game {
     this.board.unlock();
   };
 
-  draw = (): void => {
-    this.update();
-
+  private draw = (): void => {
     ImageJS.clearCanvas(this.renderCtx);
     if (this.previewMode) {
       this.image.draw(this.renderCtx);
     } else {
       this.board.draw(this.renderCtx);
     }
-    this.animatedReq = requestAnimationFrame(this.draw);
+  };
+
+  private update = (): void => {
+    this.observers.forEach((observer) => observer(this.gameState));
+    this.draw();
+    this.animatedReq = requestAnimationFrame(this.update);
   };
 }

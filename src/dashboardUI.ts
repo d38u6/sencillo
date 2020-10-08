@@ -1,5 +1,6 @@
 import { SquareNumber } from "./commonTypes";
 import { GameState } from "./game";
+import { Timer } from "./Timer";
 import { onlySquareNumber, getKeys, has } from "./utility";
 
 const selectors = {
@@ -24,9 +25,9 @@ export class DashboardUI {
   private readonly previewBtn: HTMLButtonElement;
 
   private gameState: GameState = {
-    timeCounter: 0,
-    moveCounter: 0,
-    puzzlesNumber: 9,
+    time: 0,
+    move: 0,
+    level: 9,
     isStart: false,
     previewMode: false,
   };
@@ -76,8 +77,8 @@ export class DashboardUI {
     this.startBtn.innerText = this.gameState.isStart
       ? "Rozpocznij"
       : "Zacznij od nowa";
-    this.moveCounter.innerText = `${this.gameState.moveCounter}`;
-    this.timeCounter.innerText = `${this.gameState.timeCounter}`;
+    this.moveCounter.innerText = `${this.gameState.move}`;
+    this.timeCounter.innerText = `${Timer.formatTime(this.gameState.time)}`;
   }
 
   update = (gameState: GameState): void => {

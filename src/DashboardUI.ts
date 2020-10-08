@@ -1,6 +1,6 @@
 import { Level } from "./commonTypes";
 import { TypedEvent } from "./TypedEvent";
-import { GameState } from "./game";
+import { GameState } from "./Game";
 import { Timer } from "./Timer";
 import { getKeys, has } from "./utility";
 

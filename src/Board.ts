@@ -1,5 +1,5 @@
 import { MousePosition, Resolution, Level } from "./commonTypes";
-import { Puzzle } from "./puzzle";
+import { Puzzle } from "./Puzzle";
 import { PuzzleResolver } from "./PuzzleResolver";
 import { PuzzlesFactory } from "./PuzzlesFactory";
 import { TypedEvent } from "./TypedEvent";

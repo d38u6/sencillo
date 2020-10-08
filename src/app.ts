@@ -1,5 +1,5 @@
 import { ImageJS } from "./ImageJS/ImageJS";
-import { Game } from "./game";
+import { Game } from "./Game";
 import { DashboardUI } from "./DashboardUI";
 import { GameUI } from "./GameUI";
 

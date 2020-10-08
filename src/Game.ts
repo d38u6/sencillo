@@ -1,5 +1,5 @@
 import { ImageJS } from "./ImageJS/ImageJS";
-import { Board } from "./board";
+import { Board } from "./Board";
 import { Level } from "./commonTypes";
 import { Timer } from "./Timer";
 import { PuzzlesFactory } from "./PuzzlesFactory";
@@ -38,9 +38,11 @@ export class Game {
 
   private observers: GameObserver[] = [];
 
+  private isStarted = false;
+
   private readonly timer = new Timer();
 
-  private isStarted = false;
+  private moveCounter = 0;
 
   constructor(
     private readonly renderCtx: CanvasRenderingContext2D,
@@ -69,7 +71,7 @@ export class Game {
   get gameState(): GameState {
     return {
       time: this.timer.time,
-      move: 0,
+      move: this.moveCounter,
       level: this.level,
       isStarted: this.isStarted,
       previewMode: false,
@@ -80,6 +82,12 @@ export class Game {
     const { canvas } = this.renderCtx;
     canvas.addEventListener("mousemove", this.board.handlerMouseMove);
     canvas.addEventListener("click", this.board.handlerClick);
+    this.board.onMovePuzzle.listen(() => {
+      this.moveCounter += 1;
+    });
+    this.board.onWin.listen(() => {
+      //
+    });
   }
 
   // observer Methods
@@ -104,6 +112,8 @@ export class Game {
 
   start = (): void => {
     this.isStarted = true;
+    this.moveCounter = 0;
+    this.timer.reset();
     this.timer.start();
     this.board.shufflePuzzles();
     this.board.unlock();

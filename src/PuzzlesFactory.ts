@@ -1,5 +1,5 @@
 import { ImageJS } from "./ImageJS/ImageJS";
-import { Puzzle } from "./puzzle";
+import { Puzzle } from "./Puzzle";
 
 interface PuzzlesFactoryOptions {
   puzzleWidth: number;

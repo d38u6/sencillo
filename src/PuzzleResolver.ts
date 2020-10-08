@@ -1,5 +1,5 @@
 import { MousePosition } from "./commonTypes";
-import { Puzzle } from "./puzzle";
+import { Puzzle } from "./Puzzle";
 
 export class PuzzleResolver {
   constructor(private readonly renderCtx: CanvasRenderingContext2D) {}

@@ -1,5 +1,5 @@
 import { ImageJS } from "./ImageJS/ImageJS";
-import { Game } from "./game";
+import { Game } from "./Game";
 import { DashboardUI } from "./DashboardUI";
 import { GameUI } from "./GameUI";
 
@@ -16,8 +16,8 @@ async function main(): Promise<void> {
 
   game.addObserver(dashboardUI.update);
 
-  dashboardUI.startClick.listen(game.start);
-  dashboardUI.levelChange.listen(game.changeLevel);
-  dashboardUI.previewClick.listen(game.switchPreviewMode);
+  dashboardUI.onStartClick.listen(game.start);
+  dashboardUI.onLevelChange.listen(game.changeLevel);
+  dashboardUI.onPreviewClick.listen(game.switchPreviewMode);
 }
 main();

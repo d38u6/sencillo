@@ -1,6 +1,6 @@
 import { Level } from "./commonTypes";
 import { TypedEvent } from "./TypedEvent";
-import { GameState } from "./game";
+import { GameState } from "./Game";
 import { Timer } from "./Timer";
 import { getKeys, has } from "./utility";
 
@@ -23,11 +23,11 @@ export class DashboardUI {
 
   private readonly previewBtn: HTMLButtonElement;
 
-  readonly levelChange = new TypedEvent<Level>();
+  readonly onLevelChange = new TypedEvent<Level>();
 
-  readonly previewClick = new TypedEvent<void>();
+  readonly onPreviewClick = new TypedEvent<void>();
 
-  readonly startClick = new TypedEvent<void>();
+  readonly onStartClick = new TypedEvent<void>();
 
   private gameState: GameState = {
     time: 0,
@@ -64,15 +64,15 @@ export class DashboardUI {
   initEvents(): void {
     this.levelSelect.addEventListener("change", (e) => {
       const value = +(e.target as HTMLSelectElement)?.value;
-      this.levelChange.emit(value);
+      this.onLevelChange.emit(value);
     });
 
     this.previewBtn.addEventListener("click", () => {
-      this.previewClick.emit();
+      this.onPreviewClick.emit();
     });
 
     this.startBtn.addEventListener("click", () => {
-      this.startClick.emit();
+      this.onStartClick.emit();
     });
   }
 

@@ -9,7 +9,7 @@ export interface GameState {
   time: number;
   move: number;
   level: Level;
-  isStart: boolean;
+  isStarted: boolean;
   previewMode: boolean;
 }
 
@@ -40,6 +40,8 @@ export class Game {
 
   private readonly timer = new Timer();
 
+  private isStarted = false;
+
   constructor(
     private readonly renderCtx: CanvasRenderingContext2D,
     image: ImageJS,
@@ -69,7 +71,7 @@ export class Game {
       time: this.timer.time,
       move: 0,
       level: this.level,
-      isStart: false,
+      isStarted: this.isStarted,
       previewMode: false,
     };
   }
@@ -101,6 +103,7 @@ export class Game {
   };
 
   start = (): void => {
+    this.isStarted = true;
     this.timer.start();
     this.board.shufflePuzzles();
     this.board.unlock();

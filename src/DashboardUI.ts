@@ -29,7 +29,7 @@ export class DashboardUI {
     time: 0,
     move: 0,
     level: 9,
-    isStart: false,
+    isStarted: false,
     previewMode: false,
   };
 
@@ -83,7 +83,7 @@ export class DashboardUI {
 
     this.levelSelect.value = `${this.gameState.level}`;
 
-    this.startBtn.innerText = this.gameState.isStart
+    this.startBtn.innerText = !this.gameState.isStarted
       ? "Rozpocznij"
       : "Zacznij od nowa";
   }
@@ -102,7 +102,7 @@ export class DashboardUI {
   };
 
   confirm(callback: () => void): void {
-    if (this.gameState.isStart) {
+    if (this.gameState.isStarted) {
       // eslint-disable-next-line no-alert
       if (window.confirm("Postęp rozgrywki zostanie utracony")) {
         callback();

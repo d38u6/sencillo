@@ -6,6 +6,7 @@ export class Timer {
   private _time = 0;
 
   start(): void {
+    if (this.timeInterval) clearInterval(this.timeInterval);
     this.timeInterval = setInterval(() => {
       this._time += intervalTimeout / 1000;
     }, intervalTimeout);

@@ -1,4 +1,5 @@
 import { SquareNumber } from "./commonTypes";
+import { EventEmitter, Callback } from "./EventEmitter";
 import { GameState } from "./game";
 import { Timer } from "./Timer";
 import { onlySquareNumber, getKeys, has } from "./utility";
@@ -11,8 +12,6 @@ const selectors = {
   startBtn: "start-btn",
 };
 
-type listnerCallback = (puzzlesNumbers: SquareNumber) => void;
-
 export class DashboardUI {
   private readonly timeCounter: HTMLSpanElement;
 
@@ -24,6 +23,8 @@ export class DashboardUI {
 
   private readonly previewBtn: HTMLButtonElement;
 
+  private readonly eventEmitter = new EventEmitter();
+
   private gameState: GameState = {
     time: 0,
     move: 0,
@@ -31,8 +32,6 @@ export class DashboardUI {
     isStart: false,
     previewMode: false,
   };
-
-  private puzzlesNumber: SquareNumber = 9;
 
   constructor() {
     this.timeCounter = document.getElementById(
@@ -46,7 +45,6 @@ export class DashboardUI {
     this.levelSelect = document.getElementById(
       selectors.levelSelect
     ) as HTMLSelectElement;
-    this.levelSelect.addEventListener("change", this.handlerLevelChange);
 
     this.startBtn = document.getElementById(
       selectors.startBtn
@@ -55,30 +53,39 @@ export class DashboardUI {
     this.previewBtn = document.getElementById(
       selectors.previewBtn
     ) as HTMLButtonElement;
+
+    this.initEvents();
   }
 
-  handlerLevelChange = (e: Event): void => {
-    const value = +(e.target as HTMLSelectElement)?.value;
-    this.puzzlesNumber = onlySquareNumber(value);
-  };
+  addListner(name: string, callback: Callback): void {
+    this.eventEmitter.listen(name, callback);
+  }
 
-  confirm(callback: () => void): void {
-    if (this.gameState.isStart) {
-      // eslint-disable-next-line no-alert
-      if (window.confirm("Postęp rozgrywki zostanie utracony")) {
-        callback();
-      }
-    } else {
-      callback();
-    }
+  initEvents(): void {
+    this.levelSelect.addEventListener("change", (e) => {
+      const value = +(e.target as HTMLSelectElement)?.value;
+      this.eventEmitter.emit("levelChange", onlySquareNumber(value));
+    });
+
+    this.previewBtn.addEventListener("click", () => {
+      this.eventEmitter.emit("switchPreview");
+    });
+
+    this.startBtn.addEventListener("click", () => {
+      this.eventEmitter.emit("start");
+    });
   }
 
   updateDOM(): void {
+    this.timeCounter.innerText = `${Timer.formatTime(this.gameState.time)}`;
+
+    this.moveCounter.innerText = `${this.gameState.move}`;
+
+    this.levelSelect.value = `${this.gameState.level}`;
+
     this.startBtn.innerText = this.gameState.isStart
       ? "Rozpocznij"
       : "Zacznij od nowa";
-    this.moveCounter.innerText = `${this.gameState.move}`;
-    this.timeCounter.innerText = `${Timer.formatTime(this.gameState.time)}`;
   }
 
   update = (gameState: GameState): void => {
@@ -94,31 +101,14 @@ export class DashboardUI {
     });
   };
 
-  addListner(name: string, callback: listnerCallback): void {
-    switch (name) {
-      case "start": {
-        this.startBtn.addEventListener("click", () => {
-          this.confirm(() => {
-            callback(this.puzzlesNumber);
-          });
-        });
-        break;
+  confirm(callback: () => void): void {
+    if (this.gameState.isStart) {
+      // eslint-disable-next-line no-alert
+      if (window.confirm("Postęp rozgrywki zostanie utracony")) {
+        callback();
       }
-      case "levelChange": {
-        this.levelSelect.addEventListener("change", () => {
-          this.confirm(() => {
-            callback(this.puzzlesNumber);
-          });
-        });
-        break;
-      }
-      case "preview": {
-        this.previewBtn.addEventListener("click", () => {
-          callback(this.puzzlesNumber);
-        });
-        break;
-      }
-      default:
+    } else {
+      callback();
     }
   }
 }

@@ -1,14 +1,7 @@
 import { ImageJS } from "./ImageJS/ImageJS";
 import { Game } from "./game";
-import { DashboardUI } from "./dashboardUI";
+import { DashboardUI } from "./DashboardUI";
 import { GameUI } from "./GameUI";
-
-function withConfirm(callback: () => void): void {
-  // eslint-disable-next-line no-alert
-  if (window.confirm("Chcesz rozpocząć grę od nowa?")) {
-    callback();
-  }
-}
 
 async function main(): Promise<void> {
   const image = await ImageJS.createFromFile("./images/1920x1280.jpg");
@@ -25,6 +18,6 @@ async function main(): Promise<void> {
 
   dashboardUI.addListner("start", game.start);
   dashboardUI.addListner("levelChange", game.changeLevel);
-  dashboardUI.addListner("preview", game.switchPreviewMode);
+  dashboardUI.addListner("switchPreview", game.switchPreviewMode);
 }
 main();

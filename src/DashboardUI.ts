@@ -1,8 +1,8 @@
-import { SquareNumber } from "./commonTypes";
-import { EventEmitter, Callback } from "./EventEmitter";
+import { Level } from "./commonTypes";
+import { TypedEvent } from "./TypedEvent";
 import { GameState } from "./game";
 import { Timer } from "./Timer";
-import { onlySquareNumber, getKeys, has } from "./utility";
+import { getKeys, has } from "./utility";
 
 const selectors = {
   timeCounter: "time-counter",
@@ -23,7 +23,11 @@ export class DashboardUI {
 
   private readonly previewBtn: HTMLButtonElement;
 
-  private readonly eventEmitter = new EventEmitter();
+  readonly onLevelChange = new TypedEvent<Level>();
+
+  readonly onPreviewClick = new TypedEvent<void>();
+
+  readonly onStartClick = new TypedEvent<void>();
 
   private gameState: GameState = {
     time: 0,
@@ -57,22 +61,18 @@ export class DashboardUI {
     this.initEvents();
   }
 
-  addListner(name: string, callback: Callback): void {
-    this.eventEmitter.listen(name, callback);
-  }
-
   initEvents(): void {
     this.levelSelect.addEventListener("change", (e) => {
       const value = +(e.target as HTMLSelectElement)?.value;
-      this.eventEmitter.emit("levelChange", onlySquareNumber(value));
+      this.onLevelChange.emit(value);
     });
 
     this.previewBtn.addEventListener("click", () => {
-      this.eventEmitter.emit("switchPreview");
+      this.onPreviewClick.emit();
     });
 
     this.startBtn.addEventListener("click", () => {
-      this.eventEmitter.emit("start");
+      this.onStartClick.emit();
     });
   }
 

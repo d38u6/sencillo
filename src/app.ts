@@ -16,8 +16,8 @@ async function main(): Promise<void> {
 
   game.addObserver(dashboardUI.update);
 
-  dashboardUI.addListner("start", game.start);
-  dashboardUI.addListner("levelChange", game.changeLevel);
-  dashboardUI.addListner("switchPreview", game.switchPreviewMode);
+  dashboardUI.onStartClick.listen(game.start);
+  dashboardUI.onLevelChange.listen(game.changeLevel);
+  dashboardUI.onPreviewClick.listen(game.switchPreviewMode);
 }
 main();

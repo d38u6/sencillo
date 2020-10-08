@@ -2,6 +2,7 @@ import { MousePosition, Resolution, Level } from "./commonTypes";
 import { Puzzle } from "./puzzle";
 import { PuzzleResolver } from "./PuzzleResolver";
 import { PuzzlesFactory } from "./PuzzlesFactory";
+import { TypedEvent } from "./TypedEvent";
 import { randomBetween } from "./utility";
 
 export interface BoardOptions extends Resolution {
@@ -20,6 +21,10 @@ export class Board {
   private locked = true;
 
   private puzzles: Puzzle[];
+
+  readonly onMovePuzzle = new TypedEvent<void>();
+
+  readonly onWin = new TypedEvent<void>();
 
   constructor(
     private readonly puzzlesFactory: PuzzlesFactory,
@@ -131,6 +136,10 @@ export class Board {
     if (resolvedPuzzel && this.isMovePossible(resolvedPuzzel)) {
       this.movePuzzle(resolvedPuzzel);
       this.deactivatePuzzle();
+      this.onMovePuzzle.emit();
+      if (this.checkWin()) {
+        this.onWin.emit();
+      }
     }
   };
 

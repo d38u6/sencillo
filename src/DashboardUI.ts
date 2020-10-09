@@ -89,16 +89,20 @@ export class DashboardUI {
   }
 
   update = (gameState: GameState): void => {
+    let isUpdated = false;
     getKeys(gameState).forEach((key) => {
       if (
         has(gameState, key) &&
         has(this.gameState, key) &&
         this.gameState[key] !== gameState[key]
       ) {
-        this.gameState = { ...gameState };
-        this.updateDOM();
+        isUpdated = true;
       }
     });
+    if (isUpdated) {
+      this.gameState = { ...gameState };
+      this.updateDOM();
+    }
   };
 
   confirm(callback: () => void): void {

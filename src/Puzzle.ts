@@ -124,7 +124,9 @@ export class Puzzle {
 
   draw(ctx: CanvasRenderingContext2D): void {
     const { x, y } = this.coordinates;
-    if (this.isEmpty) ctx.globalCompositeOperation = "destination-over";
+    if (this.isEmpty) {
+      ctx.globalCompositeOperation = "destination-over";
+    }
     ctx.drawImage(this.source, x, y);
   }
 }

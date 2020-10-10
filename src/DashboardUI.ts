@@ -64,7 +64,9 @@ export class DashboardUI {
   initEvents(): void {
     this.levelSelect.addEventListener("change", (e) => {
       const value = +(e.target as HTMLSelectElement)?.value;
-      this.onLevelChange.emit(value);
+      this.withConfirm(() => {
+        this.onLevelChange.emit(value);
+      });
     });
 
     this.previewBtn.addEventListener("click", () => {
@@ -72,7 +74,9 @@ export class DashboardUI {
     });
 
     this.startBtn.addEventListener("click", () => {
-      this.onStartClick.emit();
+      this.withConfirm(() => {
+        this.onStartClick.emit();
+      });
     });
   }
 
@@ -112,7 +116,7 @@ export class DashboardUI {
     }
   };
 
-  confirm(callback: () => void): void {
+  withConfirm(callback: () => void): void {
     if (this.gameState.isStarted) {
       // eslint-disable-next-line no-alert
       if (window.confirm("Postęp rozgrywki zostanie utracony")) {

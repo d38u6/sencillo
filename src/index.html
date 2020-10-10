@@ -15,20 +15,25 @@
       </div>
       <div id="dashboard-space">
         <div id="dashboard">
+          <select
+            name="puzzles-number"
+            id="level-select"
+            class="dashboard-displayer inner-shadow select"
+          >
+            <option value="9">Bardzo Łatwy</option>
+            <option value="16">Łatwy</option>
+            <option value="25">Średni</option>
+            <option value="36">Trudny</option>
+          </select>
+
           <div class="dashboard-displayer inner-shadow">
             <span id="time-counter"></span>
           </div>
+
           <div class="dashboard-displayer inner-shadow">
             <span id="move-counter">0</span>
           </div>
 
-          <label for="level-select">Poziom trudności</label>
-          <select name="puzzles-number" id="level-select">
-            <option value="9">9 Puzzli</option>
-            <option value="16">16 Puzzli</option>
-            <option value="25">25 Puzzli</option>
-            <option value="36">36 Puzzli</option>
-          </select>
           <br />
           <br />
           <button id="preview-btn">Podgląd</button>

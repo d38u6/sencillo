@@ -8,7 +8,7 @@ header {
   padding: 0 1rem;
   display: flow-root;
 }
-#game {
+#game-space {
   display: flex;
 }
 #canvas-wrapper canvas {
@@ -16,22 +16,46 @@ header {
   width: 100%;
   height: 100%;
 }
-#dashboard {
+
+#dashboard-space {
   margin-top: 1rem;
 }
 footer {
   padding: 0.44rem;
 }
 
+#dashboard {
+  background-color: #b2b2b2;
+  width: fit-content;
+  padding: 1rem 1rem;
+  border-radius: 1.44rem;
+  box-shadow: 1px 1px 20px 8px #000;
+}
+.dashboard-displayer {
+  background-color: #eeeeee;
+  padding: 1.7rem;
+  border-radius: 1rem;
+  color: #21130d;
+  font-size: 1.44rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+}
+
+.inner-shadow {
+  box-shadow: inset 0 0 10px 2px #444444;
+}
+
 @media (min-width: 992px) {
-  #game {
+  #game-space {
     float: left;
     width: 75%;
   }
-  #dashboard {
+  #dashboard-space {
     float: left;
     margin-top: 0;
-    margin-left: 1rem;
-    width: calc(25% - 1rem);
+    margin-left: 1.44rem;
+    width: calc(25% - 1.44rem);
   }
 }

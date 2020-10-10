@@ -8,23 +8,32 @@
   <body>
     <header>Sencillo Game</header>
     <section id="content">
-      <div id="game">
-        <div id="canvas-wrapper"></div>
+      <div id="game-space">
+        <div id="game">
+          <div id="canvas-wrapper"></div>
+        </div>
       </div>
-      <div id="dashboard">
-        <p>Czas gry: <span id="time-counter">0s</span></p>
-        <p>Liczba ruchów: <span id="move-counter">0</span></p>
-        <label for="level-select">Poziom trudności</label>
-        <select name="puzzles-number" id="level-select">
-          <option value="9">9 Puzzli</option>
-          <option value="16">16 Puzzli</option>
-          <option value="25">25 Puzzli</option>
-          <option value="36">36 Puzzli</option>
-        </select>
-        <br />
-        <br />
-        <button id="preview-btn">Podgląd</button>
-        <button id="start-btn">Rozpocznij</button>
+      <div id="dashboard-space">
+        <div id="dashboard">
+          <div class="dashboard-displayer inner-shadow">
+            <span id="time-counter"></span>
+          </div>
+          <div class="dashboard-displayer inner-shadow">
+            <span id="move-counter">0</span>
+          </div>
+
+          <label for="level-select">Poziom trudności</label>
+          <select name="puzzles-number" id="level-select">
+            <option value="9">9 Puzzli</option>
+            <option value="16">16 Puzzli</option>
+            <option value="25">25 Puzzli</option>
+            <option value="36">36 Puzzli</option>
+          </select>
+          <br />
+          <br />
+          <button id="preview-btn">Podgląd</button>
+          <button id="start-btn">Rozpocznij</button>
+        </div>
       </div>
     </section>
     <footer>about</footer>

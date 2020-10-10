@@ -25,13 +25,29 @@ footer {
 }
 
 #dashboard {
-  background-color: #b2b2b2;
+  background: rgb(21, 71, 113);
+  background: linear-gradient(
+    90deg,
+    rgba(21, 71, 113, 1) 0%,
+    rgba(49, 87, 120, 1) 23%,
+    rgba(127, 132, 139, 1) 49%,
+    rgba(17, 66, 108, 1) 84%,
+    rgba(0, 56, 103, 1) 100%
+  );
   padding: 1rem 1rem;
-  border-radius: 1.44rem;
+  border-radius: 0.44rem;
   box-shadow: 1px 1px 20px 8px #000;
 }
 .dashboard-displayer {
-  background-color: #eeeeee;
+  background: rgb(113, 187, 255);
+  background: linear-gradient(
+    90deg,
+    rgba(113, 187, 255, 1) 0%,
+    rgba(222, 244, 254, 1) 13%,
+    rgba(243, 255, 254, 1) 50%,
+    rgba(214, 240, 254, 1) 87%,
+    rgba(113, 187, 255, 1) 100%
+  );
   padding: 1.7rem;
   border-radius: 0.3rem;
   color: #444;
@@ -62,7 +78,7 @@ footer {
   cursor: pointer;
 }
 .btn.active {
-  background-color: #a6ffff;
+  background: #a6ffff;
 }
 .inner-shadow {
   box-shadow: inset 0 0 10px 2px #444444;

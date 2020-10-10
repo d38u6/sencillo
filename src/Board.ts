@@ -135,7 +135,6 @@ export class Board {
 
     if (resolvedPuzzel && this.isMovePossible(resolvedPuzzel)) {
       this.movePuzzle(resolvedPuzzel);
-      this.deactivatePuzzle();
       this.onMovePuzzle.emit();
       if (this.checkWin()) {
         this.onWin.emit();

@@ -85,6 +85,7 @@ export class Puzzle {
       const diffY = Math.abs(y - this.coordinates.y);
       if (diffX <= Math.abs(stepX) && diffY <= Math.abs(stepY)) {
         this.setCoordinates({ x, y });
+        this.blur();
       } else {
         this.setCoordinates({
           x: this.coordinates.x + stepX,

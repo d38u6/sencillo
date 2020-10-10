@@ -148,6 +148,10 @@ export class Board {
     this.puzzles = this.createPuzzles();
   }
 
+  lock(): void {
+    this.locked = true;
+  }
+
   unlock(): void {
     this.locked = false;
   }

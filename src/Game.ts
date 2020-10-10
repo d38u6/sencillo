@@ -86,7 +86,7 @@ export class Game {
       this.moveCounter += 1;
     });
     this.board.onWin.listen(() => {
-      //
+      // todo
     });
   }
 
@@ -108,6 +108,14 @@ export class Game {
   changeLevel = (level: Level): void => {
     this.level = level;
     this.board.changePuzzlesNumber(level);
+    this.reset();
+  };
+
+  reset = (): void => {
+    this.isStarted = false;
+    this.timer.reset();
+    this.moveCounter = 0;
+    this.board.lock();
   };
 
   start = (): void => {

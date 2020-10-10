@@ -17,6 +17,7 @@ export class Timer {
   }
 
   reset(): void {
+    clearInterval(this.timeInterval);
     this._time = 0;
   }
 

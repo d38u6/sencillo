@@ -83,6 +83,13 @@ export class DashboardUI {
 
     this.levelSelect.value = `${this.gameState.level}`;
 
+    if (
+      this.previewBtn.classList.contains("active") !==
+      this.gameState.previewMode
+    ) {
+      this.previewBtn.classList.toggle("active");
+    }
+
     this.startBtn.innerText = !this.gameState.isStarted
       ? "Rozpocznij"
       : "Zacznij od nowa";

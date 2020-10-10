@@ -74,7 +74,7 @@ export class Game {
       move: this.moveCounter,
       level: this.level,
       isStarted: this.isStarted,
-      previewMode: false,
+      previewMode: this.previewMode,
     };
   }
 

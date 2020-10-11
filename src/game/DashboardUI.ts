@@ -64,9 +64,13 @@ export class DashboardUI {
   initEvents(): void {
     this.levelSelect.addEventListener("change", (e) => {
       const value = +(e.target as HTMLSelectElement)?.value;
-      this.withConfirm(() => {
-        this.onLevelChange.emit(value);
-      });
+      setTimeout(
+        () =>
+          this.withConfirm(() => {
+            this.onLevelChange.emit(value);
+          }),
+        100
+      );
     });
 
     this.previewBtn.addEventListener("click", () => {

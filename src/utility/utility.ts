@@ -8,6 +8,10 @@ export function randomBetween(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+export function randomBetweenFloat(min: number, max: number): number {
+  return Math.random() * (max - min) + min;
+}
+
 export function onlySquareNumber(number: number): SquareNumber {
   return number === 9 || number === 16 || number === 25 || number === 36
     ? number

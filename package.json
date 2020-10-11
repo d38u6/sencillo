@@ -29,5 +29,9 @@
   "staticFiles": {
     "staticPath": "public",
     "watcherGlob": "**"
+  },
+  "dependencies": {
+    "@types/canvas-confetti": "^1.0.0",
+    "canvas-confetti": "^1.3.0"
   }
 }

@@ -3,49 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <title>TypeScript: Installation</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link rel="stylesheet" href="styles/images.css" />
   </head>
   <body>
-    <header><a href="./pictures.html">Sencillo Game</a></header>
+    <header><a href="index.html">Sencillo Game</a></header>
     <section id="content">
-      <div id="game-space">
-        <div id="game">
-          <div id="canvas-wrapper"></div>
-        </div>
-      </div>
-      <div id="dashboard-space">
-        <div id="dashboard">
-          <select
-            name="puzzles-number"
-            id="level-select"
-            class="dashboard-displayer inner-shadow select"
-          >
-            <option value="9">Bardzo Łatwy</option>
-            <option value="16">Łatwy</option>
-            <option value="25">Średni</option>
-            <option value="36">Trudny</option>
-          </select>
-
-          <div class="dashboard-displayer inner-shadow">
-            <span id="time-counter"></span>
-          </div>
-
-          <div class="dashboard-displayer inner-shadow">
-            <span id="move-counter">0</span>
-          </div>
-
-          <br />
-          <br />
-          <button id="preview-btn" class="dashboard-displayer inner-shadow btn">
-            Podgląd
-          </button>
-          <button id="start-btn" class="dashboard-displayer inner-shadow btn">
-            Rozpocznij
-          </button>
-        </div>
-      </div>
+      <div class="images"></div>
     </section>
-    <footer>about</footer>
-    <script src="app.ts"></script>
+    <footer>about<a href="game.html" hidden></a></footer>
+    <script src="images.ts"></script>
   </body>
 </html>

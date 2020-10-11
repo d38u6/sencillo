@@ -1,8 +1,8 @@
-import images from "../public/images/*.jpg";
+import images from "./assets/images/*.jpg";
 
 function createImage(src: string, alt: string): HTMLAnchorElement {
   const a = document.createElement("a");
-  a.href = `game?images=${src.slice(1)}`;
+  a.href = `game.html?images=${src.slice(1)}`;
 
   const img = document.createElement("img");
   img.src = src;

@@ -1,7 +1,7 @@
-import { ImageJS } from "./ImageJS/ImageJS";
-import { Game } from "./Game";
-import { DashboardUI } from "./DashboardUI";
-import { GameUI } from "./GameUI";
+import { ImageJS } from "./imageJS/ImageJS";
+import { Game } from "./game/Game";
+import { DashboardUI } from "./game/DashboardUI";
+import { GameUI } from "./game/GameUI";
 
 async function main(): Promise<void> {
   const image = await ImageJS.createFromFile("./images/1920x1280.jpg");

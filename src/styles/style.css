@@ -1,0 +1,14 @@
+header {
+  padding: 1rem;
+  border-bottom: 1px solid black;
+  font-size: 23px;
+}
+#content {
+  margin: 2rem 0rem;
+  padding: 0 1rem;
+  display: flow-root;
+}
+
+footer {
+  padding: 0.44rem;
+}

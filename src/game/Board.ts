@@ -1,9 +1,9 @@
-import { MousePosition, Resolution, Level } from "./commonTypes";
+import { MousePosition, Resolution, Level } from "../utility/commonTypes";
 import { Puzzle } from "./Puzzle";
 import { PuzzleResolver } from "./PuzzleResolver";
 import { PuzzlesFactory } from "./PuzzlesFactory";
-import { TypedEvent } from "./TypedEvent";
-import { randomBetween } from "./utility";
+import { TypedEvent } from "../utility/TypedEvent";
+import { randomBetween } from "../utility/utility";
 
 export interface BoardOptions extends Resolution {
   puzzlesNumber: Level;

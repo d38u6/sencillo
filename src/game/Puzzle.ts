@@ -1,5 +1,5 @@
-import { Resolution } from "./commonTypes";
-import { setCursor } from "./utility";
+import { Resolution } from "../utility/commonTypes";
+import { setCursor } from "../utility/utility";
 
 type Border = [number, string];
 

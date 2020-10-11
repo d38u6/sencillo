@@ -1,4 +1,4 @@
-import { MousePosition } from "./commonTypes";
+import { MousePosition } from "../utility/commonTypes";
 import { Puzzle } from "./Puzzle";
 
 export class PuzzleResolver {

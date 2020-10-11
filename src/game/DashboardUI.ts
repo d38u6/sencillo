@@ -1,8 +1,8 @@
-import { Level } from "./commonTypes";
-import { TypedEvent } from "./TypedEvent";
+import { Level } from "../utility/commonTypes";
+import { TypedEvent } from "../utility/TypedEvent";
 import { GameState } from "./Game";
-import { Timer } from "./Timer";
-import { getKeys, has } from "./utility";
+import { Timer } from "../timer/Timer";
+import { getKeys, has } from "../utility/utility";
 
 const selectors = {
   timeCounter: "time-counter",

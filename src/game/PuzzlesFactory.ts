@@ -1,4 +1,4 @@
-import { ImageJS } from "./ImageJS/ImageJS";
+import { ImageJS } from "../imageJS/ImageJS";
 import { Puzzle } from "./Puzzle";
 
 interface PuzzlesFactoryOptions {

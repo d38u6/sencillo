@@ -1,4 +1,4 @@
-import { SquareNumber, Resolution, Context2d } from "../commonTypes";
+import { SquareNumber, Resolution, Context2d } from "../utility/commonTypes";
 
 type imageSlice = {
   posX: number;

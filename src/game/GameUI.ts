@@ -1,4 +1,4 @@
-import { Resolution } from "./commonTypes";
+import { Resolution } from "../utility/commonTypes";
 
 export class GameUI {
   constructor(

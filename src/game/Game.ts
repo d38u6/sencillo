@@ -4,6 +4,7 @@ import { Level } from "../utility/commonTypes";
 import { Timer } from "../timer/Timer";
 import { PuzzlesFactory } from "./PuzzlesFactory";
 import { PuzzleResolver } from "./PuzzleResolver";
+import { fireworks } from "../utility/confetti";
 
 export interface GameState {
   time: number;
@@ -86,7 +87,7 @@ export class Game {
       this.moveCounter += 1;
     });
     this.board.onWin.listen(() => {
-      // todo
+      this.win();
     });
   }
 
@@ -126,6 +127,12 @@ export class Game {
     this.board.shufflePuzzles();
     this.board.unlock();
   };
+
+  private win(): void {
+    this.board.lock();
+    this.timer.pause();
+    fireworks(60000);
+  }
 
   private draw = (): void => {
     ImageJS.clearCanvas(this.renderCtx);

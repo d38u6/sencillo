@@ -1,3 +1,6 @@
+body {
+  margin: 0;
+}
 header {
   padding: 1rem;
   border-bottom: 1px solid black;
@@ -8,11 +11,13 @@ header a {
   text-decoration: none;
 }
 #content {
-  margin: 2rem 0rem;
-  padding: 0 1rem;
+  margin: 1rem 0rem;
+  padding: 0 0.44rem;
   display: flow-root;
 }
 
 footer {
+  background-color: lightgray;
+  text-align: center;
   padding: 0.44rem;
 }

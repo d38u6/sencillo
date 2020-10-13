@@ -195,52 +195,52 @@ require("../../modules/es6.object.define-property");var e=require("../../modules
 },{"../../modules/es6.object.define-property":"htFH","../../modules/_core":"zKeE"}],"eIqn":[function(require,module,exports) {
 module.exports=require("core-js/library/fn/object/define-property");
 },{"core-js/library/fn/object/define-property":"v7pm"}],"ODaV":[function(require,module,exports) {
-module.exports="sencillo/alpaca-5405469_1920.a7345f18.jpg";
+module.exports="alpaca-5405469_1920.a7345f18.jpg";
 },{}],"WPKM":[function(require,module,exports) {
-module.exports="sencillo/asleep-5500058_1920.8170839b.jpg";
+module.exports="asleep-5500058_1920.8170839b.jpg";
 },{}],"Qf3m":[function(require,module,exports) {
-module.exports="sencillo/astronaut-1784245_1920.248d47d8.jpg";
+module.exports="astronaut-1784245_1920.248d47d8.jpg";
 },{}],"FQ5e":[function(require,module,exports) {
-module.exports="sencillo/birds-5407779_1920.ae9bf5bc.jpg";
+module.exports="birds-5407779_1920.ae9bf5bc.jpg";
 },{}],"eZm7":[function(require,module,exports) {
-module.exports="sencillo/buddha-5410319_1920.e68c4aef.jpg";
+module.exports="buddha-5410319_1920.e68c4aef.jpg";
 },{}],"IfnR":[function(require,module,exports) {
-module.exports="sencillo/building-5630441_1920.72ffd64d.jpg";
+module.exports="building-5630441_1920.72ffd64d.jpg";
 },{}],"QNpB":[function(require,module,exports) {
-module.exports="sencillo/cassettes-5148602_1920.40952efb.jpg";
+module.exports="cassettes-5148602_1920.40952efb.jpg";
 },{}],"UG7X":[function(require,module,exports) {
-module.exports="sencillo/castle-5511046_1920.89a9e45c.jpg";
+module.exports="castle-5511046_1920.89a9e45c.jpg";
 },{}],"ev83":[function(require,module,exports) {
-module.exports="sencillo/chicago-5344027_1920.bd8a851d.jpg";
+module.exports="chicago-5344027_1920.bd8a851d.jpg";
 },{}],"Hnbf":[function(require,module,exports) {
-module.exports="sencillo/highway-4494907_1920.facc2990.jpg";
+module.exports="highway-4494907_1920.facc2990.jpg";
 },{}],"fW93":[function(require,module,exports) {
-module.exports="sencillo/hummingbird-5477966_1920.a2b20fc2.jpg";
+module.exports="hummingbird-5477966_1920.a2b20fc2.jpg";
 },{}],"kND4":[function(require,module,exports) {
-module.exports="sencillo/market-5430564_1920.8e17686c.jpg";
+module.exports="market-5430564_1920.8e17686c.jpg";
 },{}],"FXC1":[function(require,module,exports) {
-module.exports="sencillo/monument-valley-5499156_1920.ece9e872.jpg";
+module.exports="monument-valley-5499156_1920.ece9e872.jpg";
 },{}],"w1Lq":[function(require,module,exports) {
-module.exports="sencillo/moon-4919501_1920.00ab5014.jpg";
+module.exports="moon-4919501_1920.00ab5014.jpg";
 },{}],"aFqf":[function(require,module,exports) {
-module.exports="sencillo/mountains-5368407_1920.197f32e1.jpg";
+module.exports="mountains-5368407_1920.197f32e1.jpg";
 },{}],"rYpl":[function(require,module,exports) {
-module.exports="sencillo/ostrich-4995734_1920.75606ac3.jpg";
+module.exports="ostrich-4995734_1920.75606ac3.jpg";
 },{}],"nluD":[function(require,module,exports) {
-module.exports="sencillo/signpost-5274077_1920.93344657.jpg";
+module.exports="signpost-5274077_1920.93344657.jpg";
 },{}],"Xpnq":[function(require,module,exports) {
-module.exports="sencillo/smile-5128742_1920.c8da0dde.jpg";
+module.exports="smile-5128742_1920.c8da0dde.jpg";
 },{}],"xbR4":[function(require,module,exports) {
-module.exports="sencillo/spotted-owlet-5093773_1920.59be96af.jpg";
+module.exports="spotted-owlet-5093773_1920.59be96af.jpg";
 },{}],"ydeJ":[function(require,module,exports) {
-module.exports="sencillo/strawberries-5210753_1920.0a70114f.jpg";
+module.exports="strawberries-5210753_1920.0a70114f.jpg";
 },{}],"OLhM":[function(require,module,exports) {
-module.exports="sencillo/taxi-1574278_1920.7d11c0af.jpg";
+module.exports="taxi-1574278_1920.7d11c0af.jpg";
 },{}],"zTN2":[function(require,module,exports) {
-module.exports="sencillo/way-4005288_1920.83fa11b5.jpg";
+module.exports="way-4005288_1920.83fa11b5.jpg";
 },{}],"PJmG":[function(require,module,exports) {
 module.exports={"alpaca-5405469_1920":require("./alpaca-5405469_1920.jpg"),"asleep-5500058_1920":require("./asleep-5500058_1920.jpg"),"astronaut-1784245_1920":require("./astronaut-1784245_1920.jpg"),"birds-5407779_1920":require("./birds-5407779_1920.jpg"),"buddha-5410319_1920":require("./buddha-5410319_1920.jpg"),"building-5630441_1920":require("./building-5630441_1920.jpg"),"cassettes-5148602_1920":require("./cassettes-5148602_1920.jpg"),"castle-5511046_1920":require("./castle-5511046_1920.jpg"),"chicago-5344027_1920":require("./chicago-5344027_1920.jpg"),"highway-4494907_1920":require("./highway-4494907_1920.jpg"),"hummingbird-5477966_1920":require("./hummingbird-5477966_1920.jpg"),"market-5430564_1920":require("./market-5430564_1920.jpg"),"monument-valley-5499156_1920":require("./monument-valley-5499156_1920.jpg"),"moon-4919501_1920":require("./moon-4919501_1920.jpg"),"mountains-5368407_1920":require("./mountains-5368407_1920.jpg"),"ostrich-4995734_1920":require("./ostrich-4995734_1920.jpg"),"signpost-5274077_1920":require("./signpost-5274077_1920.jpg"),"smile-5128742_1920":require("./smile-5128742_1920.jpg"),"spotted-owlet-5093773_1920":require("./spotted-owlet-5093773_1920.jpg"),"strawberries-5210753_1920":require("./strawberries-5210753_1920.jpg"),"taxi-1574278_1920":require("./taxi-1574278_1920.jpg"),"way-4005288_1920":require("./way-4005288_1920.jpg")};
 },{"./alpaca-5405469_1920.jpg":"ODaV","./asleep-5500058_1920.jpg":"WPKM","./astronaut-1784245_1920.jpg":"Qf3m","./birds-5407779_1920.jpg":"FQ5e","./buddha-5410319_1920.jpg":"eZm7","./building-5630441_1920.jpg":"IfnR","./cassettes-5148602_1920.jpg":"QNpB","./castle-5511046_1920.jpg":"UG7X","./chicago-5344027_1920.jpg":"ev83","./highway-4494907_1920.jpg":"Hnbf","./hummingbird-5477966_1920.jpg":"fW93","./market-5430564_1920.jpg":"kND4","./monument-valley-5499156_1920.jpg":"FXC1","./moon-4919501_1920.jpg":"w1Lq","./mountains-5368407_1920.jpg":"aFqf","./ostrich-4995734_1920.jpg":"rYpl","./signpost-5274077_1920.jpg":"nluD","./smile-5128742_1920.jpg":"Xpnq","./spotted-owlet-5093773_1920.jpg":"xbR4","./strawberries-5210753_1920.jpg":"ydeJ","./taxi-1574278_1920.jpg":"OLhM","./way-4005288_1920.jpg":"zTN2"}],"MxQT":[function(require,module,exports) {
 "use strict";var e=a(require("@babel/runtime-corejs2/helpers/slicedToArray")),r=a(require("@babel/runtime-corejs2/core-js/object/entries")),t=a(require("@babel/runtime-corejs2/core-js/object/define-property"));function a(e){return e&&e.__esModule?e:{default:e}}var u=function(e){return e&&e.__esModule?e:{default:e}};(0,t.default)(exports,"__esModule",{value:!0});var n=u(require("./assets/images/*.jpg"));function c(e,r){var t=document.createElement("a");t.href="game.html?image=".concat(e.slice(1));var a=document.createElement("img");return a.src=e,a.alt=r,t.appendChild(a),t}function o(t){(0,r.default)(n.default).forEach(function(r){var a=(0,e.default)(r,2),u=a[0],n=c(a[1],u);t.appendChild(n)})}o(document.querySelector(".images"));
 },{"@babel/runtime-corejs2/helpers/slicedToArray":"vwJD","@babel/runtime-corejs2/core-js/object/entries":"dv51","@babel/runtime-corejs2/core-js/object/define-property":"eIqn","./assets/images/*.jpg":"PJmG"}]},{},["MxQT"], null)
-//# sourceMappingURL=sencillo/images.7b230329.js.map
+//# sourceMappingURL=images.7b230329.js.map

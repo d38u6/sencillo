@@ -4,11 +4,15 @@ body {
 header {
   padding: 1rem;
   border-bottom: 1px solid black;
-  font-size: 23px;
+  font-size: 28px;
 }
 header a {
   color: inherit;
   text-decoration: none;
+}
+header .icon {
+  vertical-align: text-bottom;
+  height: 32px;
 }
 #content {
   margin: 1rem 0rem;

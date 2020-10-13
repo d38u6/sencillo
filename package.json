@@ -27,7 +27,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "parcel src/index.html watch",
-    "build": "parcel build src/index.html -d build/",
+    "build": "parcel build src/index.html -d build/ --public-url ./",
     "lint": "eslint './src/*.{ts,tsx}'",
     "lint:fix": "eslint './src/*.{ts,tsx}' --fix"
   },

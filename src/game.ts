@@ -8,7 +8,7 @@ function getImageSrc(): string {
   if (!src) {
     throw new Error("Can't get image source");
   }
-  return src;
+  return `./${src}`;
 }
 
 async function main(): Promise<void> {
@@ -29,7 +29,7 @@ async function main(): Promise<void> {
     dashboardUI.onLevelChange.listen(game.changeLevel);
     dashboardUI.onPreviewClick.listen(game.switchPreviewMode);
   } catch (e) {
-    window.location.href = "/";
+    window.location.href = "./";
   }
 }
 main();

@@ -1,7 +1,7 @@
 import { ImageJS } from "../imageJS/ImageJS";
 import { Board } from "./Board";
 import { Level } from "../utility/commonTypes";
-import { Timer } from "../timer/Timer";
+import { Timer } from "../utility/Timer";
 import { PuzzlesFactory } from "./PuzzlesFactory";
 import { PuzzleResolver } from "./PuzzleResolver";
 import { fireworks } from "../utility/confetti";

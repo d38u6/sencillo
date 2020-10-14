@@ -1,27 +1,37 @@
 import { Level } from "../utility/commonTypes";
 import { TypedEvent } from "../utility/TypedEvent";
 import { GameState } from "./Game";
-import { Timer } from "../timer/Timer";
+import { Timer } from "../utility/Timer";
 import { getKeys, has } from "../utility/utility";
 
 const selectors = {
-  timeCounter: "time-counter",
-  moveCounter: "move-counter",
-  levelSelect: "level-select",
-  previewBtn: "preview-btn",
-  startBtn: "start-btn",
+  timeCounter: "#time-counter",
+  moveCounter: "#move-counter",
+  levelSelect: "#level-select",
+  previewBtn: "#preview-btn",
+  startBtn: "#start-btn",
 };
 
 export class DashboardUI {
-  private readonly timeCounter: HTMLSpanElement;
+  private readonly timeCounter = document.querySelector<HTMLSpanElement>(
+    selectors.timeCounter
+  )!;
 
-  private readonly moveCounter: HTMLSpanElement;
+  private readonly moveCounter = document.querySelector<HTMLSpanElement>(
+    selectors.moveCounter
+  )!;
 
-  private readonly levelSelect: HTMLSelectElement;
+  private readonly levelSelect = document.querySelector<HTMLSelectElement>(
+    selectors.levelSelect
+  )!;
 
-  private readonly startBtn: HTMLButtonElement;
+  private readonly startBtn = document.querySelector<HTMLButtonElement>(
+    selectors.startBtn
+  )!;
 
-  private readonly previewBtn: HTMLButtonElement;
+  private readonly previewBtn = document.querySelector<HTMLButtonElement>(
+    selectors.previewBtn
+  )!;
 
   readonly onLevelChange = new TypedEvent<Level>();
 
@@ -38,26 +48,6 @@ export class DashboardUI {
   };
 
   constructor() {
-    this.timeCounter = document.getElementById(
-      selectors.timeCounter
-    ) as HTMLSpanElement;
-
-    this.moveCounter = document.getElementById(
-      selectors.moveCounter
-    ) as HTMLSpanElement;
-
-    this.levelSelect = document.getElementById(
-      selectors.levelSelect
-    ) as HTMLSelectElement;
-
-    this.startBtn = document.getElementById(
-      selectors.startBtn
-    ) as HTMLButtonElement;
-
-    this.previewBtn = document.getElementById(
-      selectors.previewBtn
-    ) as HTMLButtonElement;
-
     this.initEvents();
   }
 
